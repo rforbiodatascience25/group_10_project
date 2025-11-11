@@ -1,6 +1,8 @@
 ---
 title: "01_load_clean"
 format: html
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Load Libraries
@@ -10,4 +12,86 @@ format: html
 #| message: false
 
 library(tidyverse)
+library(here)
+```
+
+## Load Data
+
+```{r}
+mr_bact_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresictance.csv"),
+  na.strings = c("", " ", "NA", "?", "missing"))
+```
+
+## Data Cleaning
+
+**Select Relevant Columns**
+
+```{r}
+# Identify any duplicates to remove 
+dup_IDs <- mr_bact_data |>
+  add_count(ID, name = "n") |>
+  filter(n > 1)
+
+mr_bact_data <- mr_bact_data |> 
+  select(-ID, -Name, -Email, -Address, -Collection_Date, -Notes) 
+```
+
+**Separate data into individual columns & remove NA rows**
+
+```{r}
+#| warning: false
+
+### DELETE the ID??? not sure if its necessary to keep###
+mr_bact_data <- mr_bact_data |> 
+  separate(age.gender,
+           into = c("Age", "Gender"),
+           sep = "/") |> 
+  separate(Souches, 
+           into = c("ID", "Species"),
+           sep = " ",
+           extra = "merge") |>  # only separate based on the first space 
+  select(-ID) |> 
+  filter(!(is.na(Species)) & Age != "None") 
+```
+
+**Identify typos and inconsistencies in naming**
+
+```{r}
+get_unique_counts <- function(data, column) {
+  data |>
+    count({{ column }})
+}
+
+species_count <- get_unique_counts(mr_bact_data, Species)
+diabetes_count <- get_unique_counts(mr_bact_data, Diabetes) 
+hypertension_count <- get_unique_counts(mr_bact_data, Hypertension)
+```
+
+**Rename accordingly**
+
+```{r}
+mr_bact_data <- mr_bact_data |> 
+  mutate(Species = case_when(
+  Species %in% c("E.cli", "E.coi", "E.coli", "E. coli") ~ "Escherichia coli",
+  Species %in% c("Klbsiella pneumoniae", "Klebsie.lla pneumoniae") ~ "Klebsiella pneumoniae",
+  Species %in% c("Enter.bacteria spp.", "Enteobacteria spp.") ~ "Enterobacteria spp.",
+  Species %in% c("Prot.eus mirabilis", "Protus mirabilis", "Proeus mirabilis") ~ "Proteus mirabilis",
+  TRUE ~ Species # Keep everything else unchanged 
+))
+
+mr_bact_data <- mr_bact_data |>
+  mutate(
+    Diabetes = case_when(
+      Diabetes == "True" ~ "Yes",
+      TRUE ~ Diabetes
+    ),
+    Hypertension = case_when(
+      Hypertension == "True" ~ "Yes",
+      TRUE ~ Hypertension
+    )
+  )
+
+species_count <- get_unique_counts(mr_bact_data, Species)
+diabetes_count <- get_unique_counts(mr_bact_data, Diabetes) 
+hypertension_count <- get_unique_counts(mr_bact_data, Hypertension)
 ```
