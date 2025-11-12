@@ -95,3 +95,10 @@ species_count <- get_unique_counts(mr_bact_data, Species)
 diabetes_count <- get_unique_counts(mr_bact_data, Diabetes) 
 hypertension_count <- get_unique_counts(mr_bact_data, Hypertension)
 ```
+
+
+```{r}
+write.csv(mr_bact_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
+
+```
+
