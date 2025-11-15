@@ -17,14 +17,16 @@ library(here)
 
 ## Load Data
 
+Handling of different types of NAs
+
 ```{r}
 mr_bact_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresictance.csv"),
-  na.strings = c("", " ", "NA", "?", "missing"))
+  na.strings = c("", " ", "NA", "?", "missing", "unknown", "None", "error"))
 ```
 
 ## Data Cleaning
 
-**Select Relevant Columns**
+**Analyze for duplicates and select relevant columns**
 
 ```{r}
 # Identify any duplicates to remove 
@@ -32,16 +34,18 @@ dup_IDs <- mr_bact_data |>
   add_count(ID, name = "n") |>
   filter(n > 1)
 
+#No duplicates in the dataset
+dup_IDs
+
 mr_bact_data <- mr_bact_data |> 
   select(-ID, -Name, -Email, -Address, -Collection_Date, -Notes) 
 ```
 
-**Separate data into individual columns & remove NA rows**
+**Separate data into individual columns and remove NA rows**
 
 ```{r}
 #| warning: false
 
-### DELETE the ID??? not sure if its necessary to keep###
 mr_bact_data <- mr_bact_data |> 
   separate(age.gender,
            into = c("Age", "Gender"),
@@ -51,20 +55,21 @@ mr_bact_data <- mr_bact_data |>
            sep = " ",
            extra = "merge") |>  # only separate based on the first space 
   select(-ID) |> 
-  filter(!(is.na(Species)) & Age != "None") 
+  filter(!(is.na(Species))) 
 ```
 
 **Identify typos and inconsistencies in naming**
 
 ```{r}
-get_unique_counts <- function(data, column) {
+get_unique_counts <- function(data, column_name) {
   data |>
-    count({{ column }})
+    count(.data[[column_name]])
 }
 
-species_count <- get_unique_counts(mr_bact_data, Species)
-diabetes_count <- get_unique_counts(mr_bact_data, Diabetes) 
-hypertension_count <- get_unique_counts(mr_bact_data, Hypertension)
+res <- map(colnames(mr_bact_data), 
+           ~ get_unique_counts(mr_bact_data, .x))
+
+res
 ```
 
 **Rename accordingly**
@@ -91,10 +96,20 @@ mr_bact_data <- mr_bact_data |>
     )
   )
 
-species_count <- get_unique_counts(mr_bact_data, Species)
-diabetes_count <- get_unique_counts(mr_bact_data, Diabetes) 
-hypertension_count <- get_unique_counts(mr_bact_data, Hypertension)
+fix_resistance <- function(x) {
+  case_when(
+    x == "r" ~ "R",
+    x == "s" ~ "S",
+    x %in% c("i", "Intermediate") ~ "I",
+    TRUE ~ x
+  )
+}
+
+mr_bact_data <- mr_bact_data |>
+  mutate(across(colnames(mr_bact_data)[c(8:ncol(mr_bact_data))], fix_resistance))
 ```
+
+**Save the cleaned data**
 
 ```{r}
 write.csv(mr_bact_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
