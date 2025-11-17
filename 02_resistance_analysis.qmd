@@ -1,0 +1,17 @@
+---
+title: "02_resistance_analysis"
+format: html
+editor: visual
+---
+
+## Quarto
+
+## Running Code
+
+```{r}
+library(tidyverse)
+library(here)
+
+data <- read.csv(here("data/cleaned_bacteria_data.csv"))
+
+```
