@@ -106,12 +106,15 @@ fix_resistance <- function(x) {
 }
 
 mr_bact_data <- mr_bact_data |>
-  mutate(across(colnames(mr_bact_data)[c(8:ncol(mr_bact_data))], fix_resistance))
+  mutate(across(colnames(mr_bact_data)[c(8:ncol(mr_bact_data))], 
+                fix_resistance))
 ```
 
 **Save the cleaned data**
 
 ```{r}
-write.csv(mr_bact_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
+write.csv(mr_bact_data, 
+          here("data/cleaned_bacteria_data.csv"), 
+          row.names = FALSE)
 
 ```
