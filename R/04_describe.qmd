@@ -1,0 +1,104 @@
+---
+title: "04_description"
+format: html
+---
+
+# Initial Description of the Dataset
+
+### Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(here)
+library(table1)
+```
+
+### Load Data
+
+```{r}
+mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
+```
+
+### Data Inspection
+
+```{r}
+mdr_data |> sample_n(10)
+```
+
+### Data Table
+
+```{r}
+# Table 1 
+```
+
+### Variable Distribution Overview
+
+**Age and Gender**
+
+```{r}
+#| warning: false
+
+mdr_data <- mdr_data |> 
+  mutate(age_group = cut(
+         x = Age,
+         breaks = seq(from = 0,
+                      to = 90,
+                      by = 10))) 
+ 
+p1  <- mdr_data |> 
+  ggplot(data = _, 
+              aes(x = age_group, fill = Gender)) +
+  geom_histogram(stat = "count", color = "black") + 
+  labs( x = "Age", 
+        y = "Count",
+        title = "Age Distribution by Gender") +
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text.x = element_text(angle = 60, hjust = 1))
+
+p1
+```
+
+**Species**
+
+```{r}
+#| warning: false
+
+p2 <- mdr_data |> 
+  ggplot(data = _, 
+         aes(x = Species, fill = Species)) + 
+  geom_histogram(stat = "count", color = "black") + 
+  labs( x = "Species", 
+        y = "Count",
+        title = "Species Distribution") +
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text.x = element_text(angle = 60, hjust = 1),
+        legend.position = "none")
+
+p2
+```
+
+**Species by Age Group**
+
+```{r}
+#| warning: false
+
+p3 <- mdr_data |> 
+  ggplot(data = _, aes(x = age_group, fill = Species)) +
+                           geom_histogram(stat = "count", alpha = 0.6, binwidth = 6) +
+                           labs(
+                             x = "Age",
+                             y = "Frequency",
+                             title = "Species by Age"
+                           ) + 
+                           theme_minimal(base_size = 12) +
+                           theme(plot.title = element_text(hjust = 0.5, size = 20),
+                                 axis.text.x = element_text(angle = 60, hjust = 1),
+                                 legend.position = "bottom"
+                                 ) +
+                           facet_wrap(vars(Species), ncol = 3)
+
+p3
+```

@@ -1,0 +1,49 @@
+---
+title: "01_load"
+format: html
+---
+
+## Uploading Data
+
+### Data
+
+Data for this project comes from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
+
+### Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(here)
+library(RKaggle)
+```
+
+### Create Data Folder
+
+```{r}
+data_dir <- "../data"
+raw_data_dir <- "../data/_raw"
+results_dir <- "../results"
+
+if( !dir.exists(data_dir) ){
+  dir.create(path = data_dir)
+}
+
+if( !dir.exists(raw_data_dir) ){
+  dir.create(path = results_dir)
+}
+
+if( !dir.exists(results_dir) ){
+  dir.create(path = raw_data_dir)
+}
+```
+
+### Upload Data
+
+```{r}
+#| message: false
+
+Bacteria_dataset_Multiresistance.csv <- RKaggle::get_dataset(("adilimadeddinehosni/multi-resistance-antibiotic-susceptibility"))
+```
