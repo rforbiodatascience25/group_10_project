@@ -23,27 +23,33 @@ library(RKaggle)
 ### Create Data Folder
 
 ```{r}
-data_dir <- "../data"
-raw_data_dir <- "../data/_raw"
-results_dir <- "../results"
+data_dir <- here("data")
+raw_data_dir <- here("data", "_raw")
+results_dir <- here("results")
 
 if( !dir.exists(data_dir) ){
   dir.create(path = data_dir)
 }
 
 if( !dir.exists(raw_data_dir) ){
-  dir.create(path = results_dir)
+  dir.create(path = raw_data_dir, recursive = TRUE)
 }
 
 if( !dir.exists(results_dir) ){
-  dir.create(path = raw_data_dir)
+  dir.create(path = results_dir)
 }
 ```
 
 ### Upload Data
 
 ```{r}
+#| warning: false
 #| message: false
 
-Bacteria_dataset_Multiresistance.csv <- RKaggle::get_dataset(("adilimadeddinehosni/multi-resistance-antibiotic-susceptibility"))
+raw_file <- here("data", "_raw", "Bacteria_dataset_Multiresistance.csv")
+
+if (!file.exists(raw_file)) {
+  df <- RKaggle::get_dataset("adilimadeddinehosni/multi-resistance-antibiotic-susceptibility")
+  write_csv(df, raw_file)
+}
 ```
