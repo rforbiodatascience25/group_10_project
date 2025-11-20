@@ -58,7 +58,7 @@ write.csv(data_long, here("data/data_long.csv"), row.names = FALSE)
 
 ```
 
-### fixing the data 
+### fixing the data
 
 resistant - means if the results are R - e.g., True or False
 
