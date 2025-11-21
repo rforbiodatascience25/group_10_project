@@ -1,5 +1,5 @@
 ---
-title: "01_load_clean"
+title: "02_clean"
 format: html
 editor_options: 
   chunk_output_type: console
@@ -20,7 +20,7 @@ library(here)
 Handling of different types of NAs
 
 ```{r}
-mr_bact_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresictance.csv"),
+mdr_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresictance.csv"),
   na.strings = c("", " ", "NA", "?", "missing", "unknown", "None", "error"))
 ```
 
@@ -30,14 +30,14 @@ mr_bact_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresictance.csv"),
 
 ```{r}
 # Identify any duplicates to remove 
-dup_IDs <- mr_bact_data |>
+dup_IDs <- mdr_data |>
   add_count(ID, name = "n") |>
   filter(n > 1)
 
 #No duplicates in the dataset
 dup_IDs
 
-mr_bact_data <- mr_bact_data |> 
+mdr_data <- mdr_data |> 
   select(-ID, -Name, -Email, -Address, -Collection_Date, -Notes) 
 ```
 
@@ -46,7 +46,7 @@ mr_bact_data <- mr_bact_data |>
 ```{r}
 #| warning: false
 
-mr_bact_data <- mr_bact_data |> 
+mdr_data <- mdr_data |> 
   separate(age.gender,
            into = c("Age", "Gender"),
            sep = "/") |> 
@@ -66,8 +66,8 @@ get_unique_counts <- function(data, column_name) {
     count(.data[[column_name]])
 }
 
-res <- map(colnames(mr_bact_data), 
-           ~ get_unique_counts(mr_bact_data, .x))
+res <- map(colnames(mdr_data), 
+           ~ get_unique_counts(mdr_data, .x))
 
 res
 ```
@@ -75,7 +75,7 @@ res
 **Rename accordingly**
 
 ```{r}
-mr_bact_data <- mr_bact_data |> 
+mdr_data <- mdr_data |> 
   mutate(Species = case_when(
   Species %in% c("E.cli", "E.coi", "E.coli", "E. coli") ~ "Escherichia coli",
   Species %in% c("Klbsiella pneumoniae", "Klebsie.lla pneumoniae") ~ "Klebsiella pneumoniae",
@@ -84,7 +84,7 @@ mr_bact_data <- mr_bact_data |>
   TRUE ~ Species # Keep everything else unchanged 
 ))
 
-mr_bact_data <- mr_bact_data |>
+mdr_data <- mdr_data |>
   mutate(
     Diabetes = case_when(
       Diabetes == "True" ~ "Yes",
@@ -105,13 +105,13 @@ fix_resistance <- function(x) {
   )
 }
 
-mr_bact_data <- mr_bact_data |>
-  mutate(across(colnames(mr_bact_data)[c(8:ncol(mr_bact_data))], fix_resistance))
+mdr_data <- mdr_data |>
+  mutate(across(colnames(mdr_data)[c(8:ncol(mdr_data))], fix_resistance))
 ```
 
 **Save the cleaned data**
 
 ```{r}
-write.csv(mr_bact_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
+write.csv(mdr_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
 
 ```
