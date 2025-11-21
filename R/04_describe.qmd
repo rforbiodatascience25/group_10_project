@@ -268,7 +268,3 @@ p8 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
 
 p8
 ```
-
-```{r}
-p4
-```
