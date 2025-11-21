@@ -3,7 +3,7 @@ title: "04_description"
 format: html
 ---
 
-# Initial Description of the Dataset
+# Description of the Dataset
 
 ### Load Libraries
 
@@ -14,6 +14,7 @@ format: html
 library(tidyverse)
 library(here)
 library(table1)
+library(patchwork)
 ```
 
 ### Load Data
@@ -25,38 +26,91 @@ mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
 ### Data Inspection
 
 ```{r}
+# Number of rows & columns
+dim(mdr_data)
+```
+
+```{r}
 mdr_data |> sample_n(10)
 ```
 
 ### Data Table
 
 ```{r}
-# Table 1 
+# Table describing the data per species
+table1(
+  ~ Age + Gender  + Diabetes + Hypertension + Hospital_before +
+    Infection_Freq +
+    AMX.AMP + AMC + CZ + FOX + CTX.CRO + IPM + GEN + AN +
+    Acide.nalidixique + ofx + CIP + C + Co.trimoxazole +
+    Furanes + colistine
+  | Species,
+  data = mdr_data
+)
 ```
 
-### Variable Distribution Overview
+### Table Describing Antibiotic Full Names
+
+```{r}
+antibiotic_table <- data.frame(
+  Code = c(
+    "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
+    "GEN", "AN", "Acide.nalidixique", "ofx", "CIP", "C",
+    "Co.trimoxazole", "Furanes", "colistine"
+  ),
+  Name = c(
+    "Amoxicillin / Ampicillin",
+    "Amoxicillin + Clavulanic Acid",
+    "Cefazolin",
+    "Cefoxitin",
+    "Cefotaxime / Ceftriaxone",
+    "Imipenem",
+    "Gentamicin",
+    "Amikacin",
+    "Nalidixic Acid",
+    "Ofloxacin",
+    "Ciprofloxacin",
+    "Chloramphenicol",
+    "Trimethoprim + Sulfamethoxazole",
+    "Nitrofurantoin",
+    "Colistin"
+  ),
+  stringsAsFactors = FALSE
+)
+
+antibiotic_table
+```
+
+### Visualisation of Variable Distributions
 
 **Age and Gender**
 
 ```{r}
 #| warning: false
 
+breaks <- seq(0, 90, 10)
+labels <- paste0("[", head(breaks, -1), ",", tail(breaks, -1), "]")
+
 mdr_data <- mdr_data |> 
   mutate(age_group = cut(
          x = Age,
-         breaks = seq(from = 0,
-                      to = 90,
-                      by = 10))) 
+         breaks = breaks,
+             right = FALSE,
+    include.lowest = TRUE,
+    labels = labels)) 
  
 p1  <- mdr_data |> 
   ggplot(data = _, 
               aes(x = age_group, fill = Gender)) +
-  geom_histogram(stat = "count", color = "black") + 
+  geom_bar(stat = "count", color = "black") + 
+  scale_y_continuous(breaks = seq(0, 2000, 250)) +
   labs( x = "Age", 
         y = "Count",
         title = "Age Distribution by Gender") +
   theme(plot.title = element_text(hjust = 0.5, size = 20),
-        axis.text.x = element_text(angle = 60, hjust = 1))
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14))
 
 p1
 ```
@@ -69,36 +123,136 @@ p1
 p2 <- mdr_data |> 
   ggplot(data = _, 
          aes(x = Species, fill = Species)) + 
-  geom_histogram(stat = "count", color = "black") + 
+  geom_bar(color = "black") +
+    geom_text(stat = "count",
+    aes(label = ..count..),
+    vjust = -0.2,        # raise text above bars
+    size = 2.8
+  ) +
+  scale_y_continuous(breaks = seq(0, 6000, 1000)) +
   labs( x = "Species", 
         y = "Count",
         title = "Species Distribution") +
   theme(plot.title = element_text(hjust = 0.5, size = 20),
-        axis.text.x = element_text(angle = 60, hjust = 1),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+        axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
         legend.position = "none")
 
 p2
 ```
 
-**Species by Age Group**
+**Age Distribution per Species**
+
+```{r}
+p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
+  geom_boxplot(color = "black") +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  labs(title = "Age Distribution by Species",
+       x = "Species",
+       y = "Age") +
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none")
+
+p3
+```
+
+**Hypertension, Diabetes, Hospital before, Infection Freq**
 
 ```{r}
 #| warning: false
+#| message: false
 
-p3 <- mdr_data |> 
-  ggplot(data = _, aes(x = age_group, fill = Species)) +
-                           geom_histogram(stat = "count", alpha = 0.6, binwidth = 6) +
-                           labs(
-                             x = "Age",
-                             y = "Frequency",
-                             title = "Species by Age"
-                           ) + 
-                           theme_minimal(base_size = 12) +
-                           theme(plot.title = element_text(hjust = 0.5, size = 20),
-                                 axis.text.x = element_text(angle = 60, hjust = 1),
-                                 legend.position = "bottom"
-                                 ) +
-                           facet_wrap(vars(Species), ncol = 3)
+p4 <- mdr_data |> 
+  ggplot(data = _, 
+         aes(x = Diabetes, fill = Diabetes)) +
+  geom_bar(stat = "count", color = "black") +
+  labs(y = "Count",
+       title = "Diabetes") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16),
+        axis.text.x = element_text(hjust = 1, size = 10),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none")
 
-p3
+p5 <- mdr_data |> 
+  ggplot(data = _, 
+         aes(x = Hypertension, fill = Hypertension)) +
+  geom_bar(stat = "count", color = "black") +
+  labs( y = "Count",
+        title = "Hypertension") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16),
+        axis.text.x = element_text(hjust = 1, size = 10),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none")
+
+p6 <- mdr_data |> 
+  ggplot(data = _, 
+         aes(x = Hospital_before, fill = Hospital_before)) +
+  geom_bar(stat = "count", color = "black") +
+  labs( y = "Count",
+        title = "Hospital Before") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16),
+        axis.text.x = element_text(hjust = 1, size = 10),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none")
+
+p7 <- mdr_data |> 
+  mutate(Infection_Freq = factor(Infection_Freq, levels = c(0,1,2,3))) |>
+  ggplot(data = _, 
+         aes(x = Infection_Freq,  fill = Infection_Freq)) +
+  geom_bar(stat = "count", color = "black") +
+  labs( y = "Count",
+        title = "Infection Freq") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16),
+        axis.text.x = element_text(hjust = 1, size = 10),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none")
+
+pl <- (p4 + p5) / (p6 + p7)
+pl
+```
+
+**Antibiotic Resistance Profiles**
+
+```{r}
+# List all Antibiotic Columns 
+abx_cols <- c(
+  "AMX.AMP","AMC","CZ","FOX","CTX.CRO","IPM","GEN","AN",
+  "Acide.nalidixique","ofx","CIP","C","Co.trimoxazole",
+  "Furanes","colistine"
+)
+
+# Reshape to long format
+mdr_long <- mdr_data |>
+  pivot_longer(cols = all_of(abx_cols),
+    names_to = "Antibiotic",
+    values_to = "Resistance"
+  )
+
+# Convert resistance to a factor 
+mdr_long$Resistance <- factor(mdr_long$Resistance,
+                              levels = c("S","I","R"))
+
+p8 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
+  geom_bar(position = "fill", color = "black") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Resistance Profile by Antibiotic",
+    x = "Antibiotic",
+    y = "Percent"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 18),
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14)
+  )
+
+p8
 ```
