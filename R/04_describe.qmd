@@ -34,6 +34,18 @@ dim(mdr_data)
 mdr_data |> sample_n(10)
 ```
 
+### Add Age Group Variable
+
+```{r}
+mdr_data <- mdr_data |> 
+  mutate(age_group = cut(
+         x = Age,
+         breaks = seq(from = 0,
+                      to = 90,
+                      by = 10),
+         include.lowest = TRUE)) 
+```
+
 ### Data Table
 
 ```{r}
@@ -255,4 +267,8 @@ p8 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
   )
 
 p8
+```
+
+```{r}
+p4
 ```
