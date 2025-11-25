@@ -25,6 +25,8 @@ infect_db <- read_csv(here("data/aug_wide_bacteria_data.csv"),
                       show_col_types = FALSE)
 ```
 
+#### First model: Is infection frequency correlated to patient details?
+
 ```{r}
 model1 <- infect_db |> 
   lm(Infection_Freq ~ Age + Diabetes + Hypertension + Hospital_before,
@@ -32,6 +34,8 @@ model1 <- infect_db |>
 )
 summary(model1)
 ```
+
+#### Second model: Is infection frequency correlated with the species?
 
 ```{r}
 model2 <- infect_db |> 
@@ -41,6 +45,8 @@ model2 <- infect_db |>
 summary(model2)
 ```
 
+#### Third model: Is infection frequency correlated with multiple drug resistance?
+
 ```{r}
 model3 <- infect_db |> 
   lm(Infection_Freq ~ MDR,
@@ -48,6 +54,8 @@ model3 <- infect_db |>
 )
 summary(model3)
 ```
+
+#### 
 
 ```{r}
 model_full <- infect_db |> 
@@ -79,13 +87,12 @@ infect_plot1 <- tidy_lm |>
   filter(term != "(Intercept)") |>
   mutate(term = fct_reorder(term, estimate)) |>
   ggplot(aes(y = term, x = estimate)) +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = sig), height = 0.2) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.2) +
   geom_point() +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(x = "Estimates (95% CIs)",
        y = "",
-       title = "Factors associated with infection frequency",
-       color = "p-value < 0.05") +
+       title = "Factors associated with infection frequency") +
   theme_minimal()
 
 ggsave(filename = "infect_plot1.png", plot = infect_plot1, path = here("results/images"), dpi = 300)
@@ -119,7 +126,10 @@ pl <- tidy_lm |>
     legend.position = "none") +
     labs(
     x = "Estimates",
-    y = "-log10(p)")
+    y = "-log10(p)",
+    title = "Factors associated with infection frequency",
+    subtitle = "Factors highlighted in turquoise are significant")
 
+ggsave(filename = "infect_volcano.png", plot = pl, path = here("results/images"), dpi = 300)
 pl
 ```
