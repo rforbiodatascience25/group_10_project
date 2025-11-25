@@ -70,7 +70,7 @@ pca_fit |>
 
 As seen in the initial PCA plot, the structure of the data is dominated by the large number of *E. coli* isolates, making it difficult to observe patterns from other species. This imbalance can also bias the interpretation of the principal components, since one species disproportionately drives the variance. To avoid this dominance and obtain a clearer, more balanced view of resistance patterns, we downsample each species to the same number of isolates.
 
-##  Create Balanced Dataset
+## Create Balanced Dataset
 
 We calculate the minimum number of isolates per species to determine the target size for constructing a balanced dataset. We downsample each species to the same number of isolates, preventing highly abundant species from dominating the PCA structure.
 
