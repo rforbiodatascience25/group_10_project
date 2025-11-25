@@ -4,7 +4,9 @@ format: html
 editor: visual
 ---
 
-⁠Creating a heatmap - raw bacteria column antibiotics - get pattern of resistance
+## HeatMap
+
+This analysis visualizes the resistance patterns of different bacterial species to various antibiotics using a heatmap. The raw dataset, which includes species, antibiotics, and resistance results (`R`, `S`, or `I`), was first transformed to create a binary `resistant` variable indicating whether a bacterium is resistant (`R`) or not. The data was then grouped by species and antibiotic to calculate the number of resistant and non-resistant cases, from which the frequency of resistance for each species-antibiotic pair was computed. The resulting heatmap uses a color gradient from blue (low resistance) through white (intermediate) to red (high resistance) to illustrate the proportion of resistant isolates, allowing for rapid identification of patterns in bacterial susceptibility. Additional analyses highlight which species exhibit the highest levels of resistance, sensitivity, or intermediate responses, providing insights into potential treatment challenges.
 
 ## Running Code
 
@@ -64,9 +66,11 @@ write.csv(resistant_data, here("data/resistant_data.csv"), row.names = FALSE)
 
 ```
 
-### Heatmap - Lab3
+### plotting the Heatmap 
 
 showing the Resistance of the bacteria to antibiotics.
+
+it is calculate by each bacteria.
 
 ```{r}
 ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = freq)) +
