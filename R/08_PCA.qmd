@@ -21,33 +21,12 @@ library(broom)
 ## Load Data
 
 ```{r}
-MDR_df <- read.csv(here("data/cleaned_bacteria_data.csv"))
+MDR_df <- read.csv(here("data/aug_wide_bacteria_data.csv"))
 ```
 
 ## Convert Resistance Categories to Numeric
 
-We transform the categorical resistance values (R, I, S) into numeric scores (1, 0.5, 0), allowing us to quantitatively analyze resistance patterns across samples.
-
-```{r}
-antibiotics_cols <- colnames(MDR_df)[c(8:ncol(MDR_df))]
-
-count_resistance <- function(x) {
-  case_when(
-    x == "R" ~ 1,
-    x == "I" ~ 0.5,
-    x == "S" ~ 0
-  )
-}
-
-antibiotics_cols <- colnames(MDR_df)[c(8:ncol(MDR_df))]
-
-
-#Apply the case_when function to mutate every antibiotic column and sum into MDR variable
-MDR_df <- MDR_df |>
-  mutate(
-    across(antibiotics_cols, 
-           count_resistance))
-```
+In 03_augment.qmd we transform the categorical resistance values (R, I, S) into numeric scores (1, 0.5, 0), allowing us to quantitatively analyze resistance patterns across samples.
 
 ## Run Initial PCA
 
