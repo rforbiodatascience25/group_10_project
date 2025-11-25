@@ -5,3 +5,19 @@ editor: visual
 ---
 
 ## Antibiotic Resistance
+
+### Bacterial Resistance Heatmap
+
+This heatmap shows the frequency of resistance of different bacterial species to a range of antibiotics. Colors re\[resent the proportion of resistant isolates, with blue indicating low resistance, white intermediate and red high resistance.
+
+![](images/heatmap_resistance.png)
+
+Key observations from the heatmap:
+
+-   Escherichia Coli and *Klebsiella pneumoniae* show the highest overall resistance to several antibiotics (red areas).
+
+-   Most other species display lower resistance (mostly blue to light purple), suggesting they are more sensitive.
+
+-   some antibiotics appear more effective across multiple species, as indicated by consistently low resistance frequencies.
+
+-   The heatmap allows rapid visualization of susceptibility patterns, highlighting potential treatment challenges for highly resistant species.
