@@ -64,17 +64,6 @@ mdr_long |>
 
 ```{r}
 #| warning: false
-
-breaks <- seq(0, 90, 10)
-labels <- paste0("[", head(breaks, -1), ",", tail(breaks, -1), "]")
-
-mdr_wide <- mdr_wide |> 
-  mutate(age_group = cut(
-         x = Age,
-         breaks = breaks,
-             right = FALSE,
-    include.lowest = TRUE,
-    labels = labels))
  
 p1  <- mdr_wide |> 
   ggplot(data = _, 
