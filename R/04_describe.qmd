@@ -5,7 +5,7 @@ format: html
 
 # Description of the Dataset
 
-### Load Libraries
+## Load Libraries
 
 ```{r}
 #| warning: false
@@ -17,14 +17,14 @@ library(table1)
 library(patchwork)
 ```
 
-### Load Data
+## Load Data
 
 ```{r}
 mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
 mdr_long <- read.csv(here("data/aug_long_bacteria_data.csv"))
 ```
 
-### Data Inspection
+## Data Inspection
 
 ```{r}
 # Number of rows & columns
@@ -35,7 +35,7 @@ dim(mdr_data)
 mdr_data |> sample_n(10)
 ```
 
-### Add Age Group Variable
+## Add Age Group Variable
 
 ```{r}
 mdr_data <- mdr_data |> 
@@ -47,7 +47,7 @@ mdr_data <- mdr_data |>
          include.lowest = TRUE)) 
 ```
 
-### Data Table
+## Data Table
 
 ```{r}
 # Table describing the data per species
@@ -62,14 +62,14 @@ table1(
 )
 ```
 
-### Table Describing Antibiotic Full Names & Class
+## Table Describing Antibiotic Full Names & Class
 
 ```{r}
 mdr_long |> 
   distinct(Antibiotic, Full_Name, Class)
 ```
 
-### Visualisation of Variable Distributions
+## Visualisation of Variable Distributions
 
 **Age and Gender**
 
