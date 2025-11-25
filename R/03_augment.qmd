@@ -10,6 +10,12 @@ library(tidyverse)
 library(here)
 ```
 
+## Load Functions
+
+```{r}
+source("99_proj_func.R")
+```
+
 ## Load Data
 
 ```{r}
@@ -103,18 +109,11 @@ write.csv(mdr_joined, here("data/aug_long_bacteria_data.csv"), row.names = FALSE
 To make linear model we will need a MDR variable, which assigns a numerical score to the resistance profile of each isolate. For every antibiotic tested, we added **1 point** if the isolate was classified as *Resistant (R)* and **0.5 points** if it was classified as *Intermediate (I)*, while *Susceptible (S)* contributed **0 points**. By summing these values across all antibiotics for each sample, we obtained a continuous MDR score that reflects the degree of multidrug resistance.
 
 ```{r}
-count_resistance <- function(x) {
-  case_when(
-    x == "R" ~ 1,
-    x == "I" ~ 0.5,
-    x == "S" ~ 0
-  )
-}
-
 antibiotics_cols <- colnames(mdr_data)[c(8:ncol(mdr_data))]
 
 
 #Apply the case_when function to mutate every antibiotic column and sum into MDR variable
+#Count resistance is a function in 99_proj_func.R
 mdr_wide <- mdr_data |>
   mutate(
     across(antibiotics_cols, 
