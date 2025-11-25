@@ -1,8 +1,10 @@
 ---
 title: "02_clean"
-format: html
-editor_options: 
-  chunk_output_type: console
+author: "Eden Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
+format: 
+   html:
+    embed-resources: true
+editor: visual
 ---
 
 ## Load Libraries

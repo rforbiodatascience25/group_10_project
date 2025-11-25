@@ -1,6 +1,9 @@
 ---
-title: "Infection Linear Model"
-format: html
+title: "06_Infection Linear Model"
+author: "Eden Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
+format: 
+   html:
+    embed-resources: true
 editor: visual
 ---
 

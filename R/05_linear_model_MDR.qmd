@@ -1,6 +1,10 @@
 ---
-title: "03_linear_model"
-format: html
+title: "05_linear_model"
+author: "Eden Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
+format: 
+   html:
+    embed-resources: true
+editor: visual
 ---
 
 # Multidrug Resistance Linear Model

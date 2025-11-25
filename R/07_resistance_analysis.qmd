@@ -1,6 +1,9 @@
 ---
-title: "resistance_analysis"
-format: html
+title: "07_resistance_analysis"
+author: "Eden Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
+format: 
+   html:
+    embed-resources: true
 editor: visual
 ---
 
