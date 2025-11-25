@@ -15,6 +15,12 @@ library(tidyverse)
 library(here)
 ```
 
+## Load Functions
+
+```{r}
+source(here("R/99_proj_func.R"))
+```
+
 ## Load Data
 
 Handling of different types of NAs
@@ -61,11 +67,7 @@ mdr_data <- mdr_data |>
 **Identify typos and inconsistencies in naming**
 
 ```{r}
-get_unique_counts <- function(data, column_name) {
-  data |>
-    count(.data[[column_name]])
-}
-
+#get_unique_counts is a function in 99_proj_func.R
 res <- map(colnames(mdr_data), 
            ~ get_unique_counts(mdr_data, .x))
 
@@ -96,15 +98,7 @@ mdr_data <- mdr_data |>
     )
   )
 
-fix_resistance <- function(x) {
-  case_when(
-    x == "r" ~ "R",
-    x == "s" ~ "S",
-    x %in% c("i", "Intermediate") ~ "I",
-    TRUE ~ x
-  )
-}
-
+#fix_resistance is a function in 99_proj_func.R
 mdr_data <- mdr_data |>
   mutate(across(colnames(mdr_data)[c(8:ncol(mdr_data))], fix_resistance))
 ```

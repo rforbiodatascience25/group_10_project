@@ -22,6 +22,7 @@ library(patchwork)
 ```{r}
 mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
 mdr_long <- read.csv(here("data/aug_long_bacteria_data.csv"))
+mdr_wide <- read.csv(here("data/aug_wide_bacteria_data.csv"))
 ```
 
 ## Data Inspection
@@ -33,18 +34,6 @@ dim(mdr_data)
 
 ```{r}
 mdr_data |> sample_n(10)
-```
-
-## Add Age Group Variable
-
-```{r}
-mdr_data <- mdr_data |> 
-  mutate(age_group = cut(
-         x = Age,
-         breaks = seq(from = 0,
-                      to = 90,
-                      by = 10),
-         include.lowest = TRUE)) 
 ```
 
 ## Data Table
@@ -75,19 +64,8 @@ mdr_long |>
 
 ```{r}
 #| warning: false
-
-breaks <- seq(0, 90, 10)
-labels <- paste0("[", head(breaks, -1), ",", tail(breaks, -1), "]")
-
-mdr_data <- mdr_data |> 
-  mutate(age_group = cut(
-         x = Age,
-         breaks = breaks,
-             right = FALSE,
-    include.lowest = TRUE,
-    labels = labels))
  
-p1  <- mdr_data |> 
+p1  <- mdr_wide |> 
   ggplot(data = _, 
               aes(x = age_group, fill = Gender)) +
   geom_bar(stat = "count", color = "black") + 
