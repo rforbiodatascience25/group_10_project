@@ -86,7 +86,7 @@ p1  <- mdr_wide |>
 
 save_png(
   plot     = p1,
-  filename = here::here("results/images/04_Age_Gender.png")
+  filename = here("results/images/04_Age_Gender.png")
 )
 ```
 
@@ -116,7 +116,7 @@ p2 <- mdr_data |>
 
 save_png(
   plot     = p2,
-  filename = here::here("results/images/04_Species.png")
+  filename = here("results/images/04_Species.png")
 )
 ```
 
@@ -137,7 +137,7 @@ p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
 
 save_png(
   plot     = p3,
-  filename = here::here("results/images/04_Age_Species.png")
+  filename = here("results/images/04_Age_Species.png")
 )
 ```
 
@@ -160,7 +160,7 @@ p8 <- (p4 + p5) / (p6 + p7)
 
 save_png(
   plot     = p8,
-  filename = here::here("results/images/04_Characteristics.png")
+  filename = here("results/images/04_Characteristics.png")
 )
 ```
 
@@ -187,6 +187,6 @@ p9 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
 
 save_png(
   plot     = p9,
-  filename = here::here("results/images/04_Resistance_Profile.png")
+  filename = here("results/images/04_Resistance_Profile.png")
 )
 ```
