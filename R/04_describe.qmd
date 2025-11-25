@@ -147,54 +147,14 @@ save_png(
 #| warning: false
 #| message: false
 
-p4 <- mdr_data |> 
-  ggplot(data = _, 
-         aes(x = Diabetes, fill = Diabetes)) +
-  geom_bar(stat = "count", color = "black") +
-  labs(y = "Count",
-       title = "Diabetes") +
-  theme(plot.title = element_text(hjust = 0.5, size = 16),
-        axis.text.x = element_text(hjust = 1, size = 10),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 14),
-        legend.position = "none")
-
-p5 <- mdr_data |> 
-  ggplot(data = _, 
-         aes(x = Hypertension, fill = Hypertension)) +
-  geom_bar(stat = "count", color = "black") +
-  labs( y = "Count",
-        title = "Hypertension") +
-  theme(plot.title = element_text(hjust = 0.5, size = 16),
-        axis.text.x = element_text(hjust = 1, size = 10),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 14),
-        legend.position = "none")
-
-p6 <- mdr_data |> 
-  ggplot(data = _, 
-         aes(x = Hospital_before, fill = Hospital_before)) +
-  geom_bar(stat = "count", color = "black") +
-  labs( y = "Count",
-        title = "Hospital Before") +
-  theme(plot.title = element_text(hjust = 0.5, size = 16),
-        axis.text.x = element_text(hjust = 1, size = 10),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 14),
-        legend.position = "none")
-
-p7 <- mdr_data |> 
-  mutate(Infection_Freq = factor(Infection_Freq, levels = c(0,1,2,3))) |>
-  ggplot(data = _, 
-         aes(x = Infection_Freq,  fill = Infection_Freq)) +
-  geom_bar(stat = "count", color = "black") +
-  labs( y = "Count",
-        title = "Infection Freq") +
-  theme(plot.title = element_text(hjust = 0.5, size = 16),
-        axis.text.x = element_text(hjust = 1, size = 10),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 14),
-        legend.position = "none")
+p4 <- plot_bar(mdr_data, Diabetes, "Diabetes")
+p5 <- plot_bar(mdr_data, Hypertension, "Hypertension")
+p6 <- plot_bar(mdr_data, Hospital_before, "Hospital Before")
+p7 <- plot_bar(
+        mdr_data |> mutate(Infection_Freq = factor(Infection_Freq, levels = c(0,1,2,3))),
+        Infection_Freq,
+        "Infection Freq"
+      )
 
 p8 <- (p4 + p5) / (p6 + p7)
 
