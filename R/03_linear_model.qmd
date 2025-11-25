@@ -1,0 +1,131 @@
+---
+title: "03_linear_model"
+format: html
+---
+
+# Multidrug Resistance Linear Model
+
+The objective of this analysis is to model, using linear models, the number of antibiotic resistances that an infection will present based on different individual and clinical characteristics, thereby allowing us to draw conclusions about which of these factors have the greatest impact on the development of antibiotic multiresistance.
+
+## Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+library("broom")
+library("ggrepel")
+```
+
+## Load Data
+
+```{r}
+MDR_df <- read.csv(here("data/cleaned_bacteria_data.csv"))
+```
+
+## MDR variable
+
+To do the analysis we construct the MDR variable assigning a numerical score to the resistance profile of each isolate. For every antibiotic tested, I added **1 point** if the isolate was classified as *Resistant (R)* and **0.5 points** if it was classified as *Intermediate (I)*, while *Susceptible (S)* contributed **0 points**. By summing these values across all antibiotics for each sample, I obtained a continuous MDR score that reflects the degree of multidrug resistance.
+
+```{r}
+count_resistance <- function(x) {
+  case_when(
+    x == "R" ~ 1,
+    x == "I" ~ 0.5,
+    x == "S" ~ 0
+  )
+}
+
+antibiotics_cols <- colnames(MDR_df)[c(8:ncol(MDR_df))]
+
+
+#Apply the case_when function to mutate every antibiotic column and sum into MDR variable
+MDR_df <- MDR_df |>
+  mutate(
+    across(antibiotics_cols, 
+           count_resistance)) |> 
+  mutate(MDR = rowSums(across(antibiotics_cols))) |> 
+  drop_na(Age, Gender, Species, Diabetes, Hypertension, Hospital_before, Infection_Freq, MDR)   #Drop all NA in the columns used to model
+```
+
+We have to convert all categorical variables to factors so that the linear model can correctly treat them as categorical predictors and generate the appropriate variables for the analysis.
+
+```{r}
+MDR_df <- MDR_df |>
+  mutate(
+    Gender = factor(Gender),
+    Species = factor(Species),
+    Diabetes = factor(Diabetes),
+    Hypertension = factor(Hypertension),
+    Hospital_before = factor(Hospital_before),
+    Infection_Freq = factor(Infection_Freq)
+  )
+```
+
+## Linear Model
+
+The linear model estimates how each clinical and bacterial variable affects MDR. Because categorical predictors use dummy coding, the intercept represents the expected MDR for the **reference categories**: *Acinetobacter baumanni,* female gender, no diabetes, no hypertension, no prior hospitalization and Infection_Freq = 0. All other coefficients indicate how MDR changes relative to these reference groups.
+
+```{r}
+linear_model <- MDR_df |> 
+  lm(formula = MDR ~ Age + Gender + Species + Diabetes + Hypertension + Hospital_before + Infection_Freq,
+     data = _)
+
+tidy_lm <- tidy(linear_model, 
+     conf.int = TRUE,
+     conf.level = 0.95) |> 
+  mutate(term = str_replace(term, "Species", "")) |> 
+  mutate(term = str_replace(term, "Yes", "")) |> 
+  mutate(term = str_replace(term, "GenderM", "Gender_M")) |> 
+  mutate(term = str_replace(term, "Freq1", "Freq_1")) |>
+  mutate(term = str_replace(term, "Freq2", "Freq_2")) |>
+  mutate(term = str_replace(term, "Freq3", "Freq_3")) |> 
+  mutate(sig = factor(p.value < 0.05))
+  
+
+tidy_lm
+```
+
+## Visualization
+
+### Forest plot
+
+```{r}
+tidy_lm |>
+  filter(term != "(Intercept)") |>
+  mutate(term = fct_reorder(term, estimate)) |>
+  ggplot(aes(y = term, x = estimate)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = sig), height = 0.2) +
+  geom_point() +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Estimates (95% CIs)",
+       y = "",
+       color = "p-value < 0.05") +
+  theme_minimal()
+```
+
+The linear model shows that bacterial species are the main drivers of MDR, indicating that certain pathogens are more prone to acquiring multiple antibiotic resistances, with *Klebsiella pneumoniae* and *Escherichia coli* displaying significantly higher MDR levels. In contrast, patient-related variables such as age, diabetes, and hypertension show no meaningful association with MDR. This lack of influence from physiological factors is intuitive, whereas prior hospitalization might have been expected to correlate with higher MDR due to potential exposure to nosocomial pathogens, however, our data do not support this relationship.
+
+### Volcano plot
+
+```{r}
+tidy_lm |> 
+  filter(term != "(Intercept)") |>
+  mutate(logpval = -log10(p.adjust(p.value))) |> 
+  ggplot(mapping = aes(y = logpval, x = estimate, color = sig, label = term)) +
+  geom_point() +
+  geom_text_repel(max.overlaps = 12, size = 3) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey40") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") +
+  labs(x = "Estimates",
+       y = "-log10(p-value)",
+       color = "p-value < 0.05") +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 10),
+    axis.title.y = element_text(face = "bold", size = 10)
+  ) 
+  
+```
