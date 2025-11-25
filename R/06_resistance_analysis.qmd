@@ -66,14 +66,14 @@ write.csv(resistant_data, here("data/resistant_data.csv"), row.names = FALSE)
 
 ```
 
-### plotting the Heatmap 
+### plotting the Heatmap
 
 showing the Resistance of the bacteria to antibiotics.
 
 it is calculate by each bacteria.
 
 ```{r}
-ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = freq)) +
+heatmap_plot <- ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = freq)) +
   geom_tile() +
   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0.50) +
   theme_minimal() +
@@ -85,6 +85,9 @@ ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = freq)) +
     plot.title = element_text(face = "bold")
   ) +
   labs(title = "Resistance of the Bacteria to the Antibiotics", fill = "Frequency")
+
+# Save the plot as PNG
+ggsave("heatmap_resistance.png", plot = heatmap_plot, width = 10, height = 8, dpi = 300)
 ```
 
 R = Resistant: The bacteria does NOT respond to the antibiotic. The drug will likely not work.
