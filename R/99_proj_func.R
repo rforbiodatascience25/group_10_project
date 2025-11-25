@@ -21,3 +21,13 @@ count_resistance <- function(x) {
     x == "S" ~ 0
   )
 }
+
+save_png <- function(plot, filename, width = 10, height = 8, dpi = 300) {
+  ggsave(
+    filename = filename,
+    plot     = plot,
+    width    = width,
+    height   = height,
+    dpi      = dpi
+  )
+}

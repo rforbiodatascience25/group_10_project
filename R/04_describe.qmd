@@ -25,6 +25,12 @@ mdr_long <- read.csv(here("data/aug_long_bacteria_data.csv"))
 mdr_wide <- read.csv(here("data/aug_wide_bacteria_data.csv"))
 ```
 
+## Load Functions
+
+```{r}
+source(here("R/99_proj_func.R"))
+```
+
 ## Data Inspection
 
 ```{r}
@@ -78,7 +84,10 @@ p1  <- mdr_wide |>
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14))
 
-p1
+save_png(
+  plot     = p1,
+  filename = here::here("results/images/04_Age_Gender.png")
+)
 ```
 
 **Species**
@@ -105,7 +114,10 @@ p2 <- mdr_data |>
         axis.title.y = element_text(size = 14),
         legend.position = "none")
 
-p2
+save_png(
+  plot     = p2,
+  filename = here::here("results/images/04_Species.png")
+)
 ```
 
 **Age Distribution per Species**
@@ -123,7 +135,10 @@ p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
         axis.title.y = element_text(size = 14),
         legend.position = "none")
 
-p3
+save_png(
+  plot     = p3,
+  filename = here::here("results/images/04_Age_Species.png")
+)
 ```
 
 **Hypertension, Diabetes, Hospital before, Infection Freq**
@@ -181,8 +196,12 @@ p7 <- mdr_data |>
         axis.title.y = element_text(size = 14),
         legend.position = "none")
 
-pl <- (p4 + p5) / (p6 + p7)
-pl
+p8 <- (p4 + p5) / (p6 + p7)
+
+save_png(
+  plot     = p8,
+  filename = here::here("results/images/04_Characteristics.png")
+)
 ```
 
 **Antibiotic Resistance Profiles**
@@ -192,7 +211,7 @@ pl
 mdr_long$Resistance <- factor(mdr_long$Resistance,
                               levels = c("S","I","R"))
 
-p8 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
+p9 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
   geom_bar(position = "fill", color = "black") +
   scale_y_continuous(labels = scales::percent) +
   labs(title = "Resistance Profile by Antibiotic",
@@ -206,5 +225,8 @@ p8 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
     axis.title.y = element_text(size = 14)
   )
 
-p8
+save_png(
+  plot     = p9,
+  filename = here::here("results/images/04_Resistance_Profile.png")
+)
 ```
