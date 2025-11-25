@@ -111,7 +111,6 @@ To make linear model we will need a MDR variable, which assigns a numerical scor
 ```{r}
 antibiotics_cols <- colnames(mdr_data)[c(8:ncol(mdr_data))]
 
-
 #Apply the case_when function to mutate every antibiotic column and sum into MDR variable
 #Count resistance is a function in 99_proj_func.R
 mdr_wide <- mdr_data |>
