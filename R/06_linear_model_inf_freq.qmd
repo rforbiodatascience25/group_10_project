@@ -21,10 +21,6 @@ infect_db <- read_csv(here("data/cleaned_bacteria_data.csv"))
 ```
 
 ```{r}
-infect_db
-```
-
-```{r}
 count_resistance <- function(x) {
   case_when(
     x == "R" ~ 1,
@@ -149,32 +145,4 @@ pl <- tidy_lm |>
     y = "-log10(p)")
 
 pl
-```
-
-```{r}
-library("ggrepel")
-pl <- gravier_estimates |>
-  mutate(lbl = case_when(
-    is_significant == "yes" ~ gene,
-    is_significant == "no" ~ "")) |> 
-  ggplot(aes(x = estimate,
-             y = -log10(p.value),
-             colour = is_significant,
-             label = lbl)) +
-  geom_point(size = 1,
-             alpha = 0.5) +
-  geom_text_repel(size = 4,
-                  max.overlaps = 20) +
-  geom_hline(yintercept = 0) +
-  theme_minimal(base_size = 16) +
-  theme(
-    plot.title = element_text(hjust = 1),
-    plot.subtitle = element_text(hjust = 1),
-    legend.position = "none") +
-  labs(
-    x = "Estimates",
-    y = "-log10(p)",
-    title = "Genes Associated with Early Metastasis in Small Node-Negative Breast Carcinoma",
-    subtitle = "Genes highlighted in turquoise were significant after multiple testing correction",
-    caption = "Data from DOI: 10.1002/gcc.20820")
 ```

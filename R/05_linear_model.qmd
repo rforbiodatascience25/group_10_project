@@ -22,47 +22,12 @@ library("ggrepel")
 ## Load Data
 
 ```{r}
-MDR_df <- read.csv(here("data/cleaned_bacteria_data.csv"))
+MDR_df <- read.csv(here("data/aug_wide_bacteria_data.csv"))
 ```
 
 ## MDR variable
 
-To do the analysis we construct the MDR variable assigning a numerical score to the resistance profile of each isolate. For every antibiotic tested, I added **1 point** if the isolate was classified as *Resistant (R)* and **0.5 points** if it was classified as *Intermediate (I)*, while *Susceptible (S)* contributed **0 points**. By summing these values across all antibiotics for each sample, I obtained a continuous MDR score that reflects the degree of multidrug resistance.
-
-```{r}
-count_resistance <- function(x) {
-  case_when(
-    x == "R" ~ 1,
-    x == "I" ~ 0.5,
-    x == "S" ~ 0
-  )
-}
-
-antibiotics_cols <- colnames(MDR_df)[c(8:ncol(MDR_df))]
-
-
-#Apply the case_when function to mutate every antibiotic column and sum into MDR variable
-MDR_df <- MDR_df |>
-  mutate(
-    across(antibiotics_cols, 
-           count_resistance)) |> 
-  mutate(MDR = rowSums(across(antibiotics_cols))) |> 
-  drop_na(Age, Gender, Species, Diabetes, Hypertension, Hospital_before, Infection_Freq, MDR)   #Drop all NA in the columns used to model
-```
-
-We have to convert all categorical variables to factors so that the linear model can correctly treat them as categorical predictors and generate the appropriate variables for the analysis.
-
-```{r}
-MDR_df <- MDR_df |>
-  mutate(
-    Gender = factor(Gender),
-    Species = factor(Species),
-    Diabetes = factor(Diabetes),
-    Hypertension = factor(Hypertension),
-    Hospital_before = factor(Hospital_before),
-    Infection_Freq = factor(Infection_Freq)
-  )
-```
+To do the analysis we construct in 03_augment.qmd the MDR variable assigning a numerical score to the resistance profile of each isolate. For every antibiotic tested, we added **1 point** if the isolate was classified as *Resistant (R)* and **0.5 points** if it was classified as *Intermediate (I)*, while *Susceptible (S)* contributed **0 points**. By summing these values across all antibiotics for each sample, we obtained a continuous MDR score that reflects the degree of multidrug resistance.
 
 ## Linear Model
 
