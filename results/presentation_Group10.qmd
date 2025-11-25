@@ -8,28 +8,6 @@ editor: visual
 
 At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
 
-### Dataset Overview
-
--   \~10,000 bacterial isolated tested against 15+ antibiotics from 4 major families
-
--   Each row: unique bacterial strain + patient demographics + clinical risk factors + antibiotic susceptibility results
-
--   Enables:
-
-    -   Multi-drug resistance (MDR) analysis
-
-    -   Study of patient risk factors vs. resistance
-
-    -   Epidemiological trends across antibiotic classes
-
-    -   Handling missing/inconsistent data
-
-### Antibiotic Families
-
-**β-lactams** (cell wall inhibitors)
-
-AMX/AMP, AMC, CZ, FOX, CTX/CRO, IPM
-
 ### Bacterial Resistance Heatmap
 
 This heatmap shows the frequency of resistance of different bacterial species to a range of antibiotics. Colors re\[resent the proportion of resistant isolates, with blue indicating low resistance, white intermediate and red high resistance.
