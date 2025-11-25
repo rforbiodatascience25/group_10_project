@@ -76,7 +76,7 @@ forest_plot
 The linear model shows that bacterial species are the main drivers of MDR, indicating that certain pathogens are more prone to acquiring multiple antibiotic resistances, with *Klebsiella pneumoniae* and *Escherichia coli* displaying significantly higher MDR levels. In contrast, patient-related variables such as age, diabetes, and hypertension show no meaningful association with MDR. This lack of influence from physiological factors is intuitive, whereas prior hospitalization might have been expected to correlate with higher MDR due to potential exposure to nosocomial pathogens, however, our data do not support this relationship.
 
 ```{r}
-ggsave(here("results/images/MDR_forest.png"), forest_plot)
+ggsave(here("results/images/05_MDR_forest.png"), forest_plot)
 ```
 
 ### Volcano plot
@@ -103,5 +103,5 @@ volcano_plot
 ```
 
 ```{r}
-ggsave(here("results/images/MDR_volcano.png"), volcano_plot)
+ggsave(here("results/images/05_MDR_volcano.png"), volcano_plot)
 ```
