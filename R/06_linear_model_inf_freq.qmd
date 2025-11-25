@@ -7,6 +7,9 @@ editor: visual
 ### Load libraries
 
 ```{r}
+#| warning: false
+#| message: false
+
 library("tidyverse") 
 library("dplyr")
 library("here")
@@ -17,39 +20,9 @@ library("ggrepel")
 ### Load data
 
 ```{r}
-infect_db <- read_csv(here("data/cleaned_bacteria_data.csv"))
-```
 
-```{r}
-count_resistance <- function(x) {
-  case_when(
-    x == "R" ~ 1,
-    x == "I" ~ 0.5,
-    x == "S" ~ 0
-  )
-}
-
-antibiotics_cols <- colnames(infect_db)[c(8:ncol(infect_db))]
-
-
-#Apply the case_when function to mutate every antibiotic column and sum into MDR variable
-infect_db <- infect_db |>
-  mutate(
-    across(antibiotics_cols, 
-           count_resistance)) |> 
-  mutate(MDR = rowSums(across(antibiotics_cols))) |> 
-  drop_na(Age, Gender, Species, Diabetes, Hypertension, Hospital_before, Infection_Freq, MDR)   #Drop all NA in the columns used to model
-```
-
-```{r}
-infect_db <- infect_db |>
-  mutate(
-    Gender = factor(Gender),
-    Species = factor(Species),
-    Diabetes = factor(Diabetes),
-    Hypertension = factor(Hypertension),
-    Hospital_before = factor(Hospital_before)
-  )
+infect_db <- read_csv(here("data/aug_wide_bacteria_data.csv"),
+                      show_col_types = FALSE)
 ```
 
 ```{r}
@@ -102,7 +75,7 @@ tidy_lm
 ```
 
 ```{r}
-tidy_lm |>
+infect_plot1 <- tidy_lm |>
   filter(term != "(Intercept)") |>
   mutate(term = fct_reorder(term, estimate)) |>
   ggplot(aes(y = term, x = estimate)) +
@@ -113,6 +86,8 @@ tidy_lm |>
        y = "",
        color = "p-value < 0.05") +
   theme_minimal()
+
+infect_plot1
 ```
 
 ```{r}
