@@ -59,7 +59,7 @@ resistant_data <- data_long |>
 resistant_data
 ```
 
-saving the table:
+### Here you can save the table if you want to look at it:
 
 ```{r}
 write.csv(resistant_data, here("data/resistant_data.csv"), row.names = FALSE)
