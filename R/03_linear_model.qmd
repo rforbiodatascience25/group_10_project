@@ -13,9 +13,10 @@ The objective of this analysis is to model, using linear models, the number of a
 #| warning: false
 #| message: false
 
-library(tidyverse)
-library(here)
-library(broom)
+library("tidyverse")
+library("here")
+library("broom")
+library("ggrepel")
 ```
 
 ## Load Data
@@ -89,6 +90,8 @@ tidy_lm
 
 ## Visualization
 
+### Forest plot
+
 ```{r}
 tidy_lm |>
   filter(term != "(Intercept)") |>
@@ -104,3 +107,25 @@ tidy_lm |>
 ```
 
 The linear model shows that bacterial species are the main drivers of MDR, indicating that certain pathogens are more prone to acquiring multiple antibiotic resistances, with *Klebsiella pneumoniae* and *Escherichia coli* displaying significantly higher MDR levels. In contrast, patient-related variables such as age, diabetes, and hypertension show no meaningful association with MDR. This lack of influence from physiological factors is intuitive, whereas prior hospitalization might have been expected to correlate with higher MDR due to potential exposure to nosocomial pathogens, however, our data do not support this relationship.
+
+### Volcano plot
+
+```{r}
+tidy_lm |> 
+  filter(term != "(Intercept)") |>
+  mutate(logpval = -log10(p.adjust(p.value))) |> 
+  ggplot(mapping = aes(y = logpval, x = estimate, color = sig, label = term)) +
+  geom_point() +
+  geom_text_repel(max.overlaps = 12, size = 3) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey40") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") +
+  labs(x = "Estimates",
+       y = "-log10(p-value)",
+       color = "p-value < 0.05") +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 10),
+    axis.title.y = element_text(face = "bold", size = 10)
+  ) 
+  
+```
