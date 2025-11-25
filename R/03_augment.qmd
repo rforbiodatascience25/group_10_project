@@ -141,13 +141,16 @@ This is a dataframe in wide format with the variable *MDR*, including the resist
 ## Add Age Group Variable
 
 ```{r}
+breaks <- seq(0, 90, 10)
+labels <- paste0("[", head(breaks, -1), ",", tail(breaks, -1), "]")
+
 mdr_wide <- mdr_wide |> 
   mutate(age_group = cut(
          x = Age,
-         breaks = seq(from = 0,
-                      to = 90,
-                      by = 10),
-         include.lowest = TRUE))
+         breaks = breaks,
+             right = FALSE,
+    include.lowest = TRUE,
+    labels = labels))
 ```
 
 ```{r}
