@@ -8,6 +8,22 @@ editor: visual
 
 At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
 
+## Loading Data
+
+## Cleaning the data
+
+## Data Argument 
+
+## Describe 
+
+## Linear Model MDR
+
+## Linear Model Inf Freq
+
+![](images/infect_plot1.png)
+
+![](images/infect_volcano.png)
+
 ## Bacterial Resistance Heatmap
 
 This heatmap shows the frequency of resistance of different bacterial species to a range of antibiotics. Colors re\[resent the proportion of resistant isolates, with blue indicating low resistance, white intermediate and red high resistance.
@@ -23,3 +39,5 @@ Key observations from the heatmap:
 -   some antibiotics appear more effective across multiple species, as indicated by consistently low resistance frequencies.
 
 -   The heatmap allows rapid visualization of susceptibility patterns, highlighting potential treatment challenges for highly resistant species.
+
+## PCA 
