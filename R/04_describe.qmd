@@ -19,6 +19,7 @@ library(tidyverse)
 library(here)
 library(table1)
 library(patchwork)
+library(htmltools)
 ```
 
 ## Load Data
@@ -50,7 +51,7 @@ mdr_data |> sample_n(10)
 
 ```{r}
 # Table describing the data per species
-table1(
+t1 <- table1(
   ~ Age + Gender  + Diabetes + Hypertension + Hospital_before +
     Infection_Freq +
     AMX.AMP + AMC + CZ + FOX + CTX.CRO + IPM + GEN + AN +
@@ -59,6 +60,9 @@ table1(
   | Species,
   data = mdr_data
 )
+
+html_table <- as.tags(t1) 
+save_html(html_table, file = here("results/images/table1.html"))
 ```
 
 ## Table Describing Antibiotic Full Names & Class
