@@ -11,8 +11,8 @@ This analysis visualizes the resistance patterns of different bacterial species 
 ## Running Code
 
 ```{r}
-library(tidyverse)
-library(here)
+library("tidyverse")
+library("here")
 
 data_long <- read.csv(here("data/aug_long_bacteria_data.csv"))
 

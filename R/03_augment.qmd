@@ -3,20 +3,20 @@ title: "03_augment"
 format: html
 ---
 
-### Load Libraries
+## Load Libraries
 
 ```{r}
 library(tidyverse)
 library(here)
 ```
 
-### Load Data
+## Load Data
 
 ```{r}
 mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
 ```
 
-### Create New Table with Name and Class of Antibiotics
+## Create New Table with Name and Class of Antibiotics
 
 ```{r}
 antibiotic_table <- data.frame(
@@ -73,7 +73,7 @@ antibiotic_table <- data.frame(
 antibiotic_table
 ```
 
-### Joining Antibiotic Table with MDR data
+## Joining Antibiotic Table with MDR data
 
 ```{r}
 Antibiotic = c(
