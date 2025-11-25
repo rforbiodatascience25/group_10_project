@@ -17,6 +17,10 @@ At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddi
 
 ## Describe
 
+```{r, results='asis'}
+htmltools::includeHTML(here::here("results/images/table1_resized.html"))
+```
+
 ## Linear Model MDR
 
 ## Linear Model Inf Freq

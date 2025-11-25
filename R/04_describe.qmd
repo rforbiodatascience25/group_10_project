@@ -63,6 +63,23 @@ t1 <- table1(
 
 html_table <- as.tags(t1) 
 save_html(html_table, file = here("results/images/table1.html"))
+
+
+# Wrap table in div to shrink
+html_table_resized <- tags$div(
+  style = "overflow-x:auto; max-width:100%; zoom:0.7;",
+  as.tags(t1)
+)
+
+# Save HTML to results/images in project
+save_html(html_table_resized, file = here("results/images/table1_resized.html"))
+
+```
+
+convert html to png
+
+```{r}
+
 ```
 
 ## Table Describing Antibiotic Full Names & Class
