@@ -1,0 +1,99 @@
+---
+title: "03_augment"
+format: html
+---
+
+### Load Libraries
+
+```{r}
+library(tidyverse)
+library(here)
+```
+
+### Load Data
+
+```{r}
+mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
+```
+
+### Create New Table with Name and Class of Antibiotics
+
+```{r}
+antibiotic_table <- data.frame(
+  Antibiotic = c(
+    "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
+    "GEN", "AN",
+    "Acide.nalidixique", "ofx", "CIP",
+    "C", "Co.trimoxazole", "Furanes", "colistine"
+  ),
+  Full_Name = c(
+    "Amoxicillin / Ampicillin",
+    "Amoxicillin + Clavulanic Acid",
+    "Cefazolin",
+    "Cefoxitin",
+    "Cefotaxime / Ceftriaxone",
+    "Imipenem",
+    "Gentamicin",
+    "Amikacin",
+    "Nalidixic Acid",
+    "Ofloxacin",
+    "Ciprofloxacin",
+    "Chloramphenicol",
+    "Trimethoprim + Sulfamethoxazole",
+    "Nitrofurantoin",
+    "Colistin"
+  ),
+  Class = c(
+    # β-lactams (Beta-lactams)
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+
+    # Aminoglycosides (Aminosides)
+    "Aminoglycosides (Aminosides)",
+    "Aminoglycosides (Aminosides)",
+
+    # Quinolones / Fluoroquinolones
+    "Quinolones / Fluoroquinolones",
+    "Quinolones / Fluoroquinolones",
+    "Quinolones / Fluoroquinolones",
+
+    # Other Important Agents
+    "Other Important Agents",
+    "Other Important Agents",
+    "Other Important Agents",
+    "Other Important Agents"
+  ),
+  stringsAsFactors = FALSE
+)
+
+antibiotic_table
+```
+
+### Joining Antibiotic Table with MDR data
+
+```{r}
+Antibiotic = c(
+    "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
+    "GEN", "AN",
+    "Acide.nalidixique", "ofx", "CIP",
+    "C", "Co.trimoxazole", "Furanes", "colistine"
+  )
+
+# Pivot MDR Data to long form
+mdr_long <- mdr_data |>
+  pivot_longer(cols = all_of(abx_cols),
+               names_to = "Antibiotic",
+               values_to = "Resistance")
+
+# Join Antibiotics table to mdr_long 
+mdr_joined <- mdr_long |> 
+    left_join(antibiotic_table, by="Antibiotic")
+```
+
+```{r}
+write.csv(mdr_joined, here("data/aug_long_bacteria_data.csv"), row.names = FALSE)
+```

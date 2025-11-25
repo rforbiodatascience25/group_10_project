@@ -21,6 +21,7 @@ library(patchwork)
 
 ```{r}
 mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
+mdr_long <- read.csv(here("data/aug_long_bacteria_data.csv"))
 ```
 
 ### Data Inspection
@@ -61,36 +62,11 @@ table1(
 )
 ```
 
-### Table Describing Antibiotic Full Names
+### Table Describing Antibiotic Full Names & Class
 
 ```{r}
-antibiotic_table <- data.frame(
-  Code = c(
-    "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
-    "GEN", "AN", "Acide.nalidixique", "ofx", "CIP", "C",
-    "Co.trimoxazole", "Furanes", "colistine"
-  ),
-  Name = c(
-    "Amoxicillin / Ampicillin",
-    "Amoxicillin + Clavulanic Acid",
-    "Cefazolin",
-    "Cefoxitin",
-    "Cefotaxime / Ceftriaxone",
-    "Imipenem",
-    "Gentamicin",
-    "Amikacin",
-    "Nalidixic Acid",
-    "Ofloxacin",
-    "Ciprofloxacin",
-    "Chloramphenicol",
-    "Trimethoprim + Sulfamethoxazole",
-    "Nitrofurantoin",
-    "Colistin"
-  ),
-  stringsAsFactors = FALSE
-)
-
-antibiotic_table
+mdr_long |> 
+  distinct(Antibiotic, Full_Name, Class)
 ```
 
 ### Visualisation of Variable Distributions
@@ -109,7 +85,7 @@ mdr_data <- mdr_data |>
          breaks = breaks,
              right = FALSE,
     include.lowest = TRUE,
-    labels = labels)) 
+    labels = labels))
  
 p1  <- mdr_data |> 
   ggplot(data = _, 
@@ -234,20 +210,6 @@ pl
 **Antibiotic Resistance Profiles**
 
 ```{r}
-# List all Antibiotic Columns 
-abx_cols <- c(
-  "AMX.AMP","AMC","CZ","FOX","CTX.CRO","IPM","GEN","AN",
-  "Acide.nalidixique","ofx","CIP","C","Co.trimoxazole",
-  "Furanes","colistine"
-)
-
-# Reshape to long format
-mdr_long <- mdr_data |>
-  pivot_longer(cols = all_of(abx_cols),
-    names_to = "Antibiotic",
-    values_to = "Resistance"
-  )
-
 # Convert resistance to a factor 
 mdr_long$Resistance <- factor(mdr_long$Resistance,
                               levels = c("S","I","R"))
