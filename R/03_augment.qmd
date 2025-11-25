@@ -85,7 +85,7 @@ Antibiotic = c(
 
 # Pivot MDR Data to long form
 mdr_long <- mdr_data |>
-  pivot_longer(cols = all_of(abx_cols),
+  pivot_longer(cols = all_of(Antibiotic),
                names_to = "Antibiotic",
                values_to = "Resistance")
 
