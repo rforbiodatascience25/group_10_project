@@ -60,7 +60,7 @@ pca_all_plot
 As seen in the initial PCA plot, the structure of the data is dominated by the large number of *E. coli* isolates, making it difficult to observe patterns from other species. This imbalance can also bias the interpretation of the principal components, since one species disproportionately drives the variance. To avoid this dominance and obtain a clearer, more balanced view of resistance patterns, we downsample each species to the same number of isolates.
 
 ```{r}
-ggsave(here("results/images/PCA_all.png"), pca_all_plot)
+ggsave(here("results/images/08_PCA_all.png"), pca_all_plot)
 ```
 
 ## Create Balanced Dataset
@@ -108,5 +108,5 @@ pca_downsampling_plot
 The PCA of the balanced dataset shows that most species exhibit substantial overlap in their resistance profiles, indicating that many antibiotic-resistance patterns are shared across taxa. However, some species occupy more distinct regions of the PCA space. For instance, *Pseudomonas aeruginosa* and *Serratia marcescens* are positioned predominantly toward the right side of the plot, forming more defined clusters that show limited overlap with the left cloud dominated by *Escherichia coli*. This separation suggests that these species follow characteristic combinations of resistance traits that differ from the broader and more heterogeneous profiles observed in *E. coli* and other Enterobacterales. Overall, while many species share common multidrug-resistance patterns, a subset displays more distinct resistance signatures that set them apart from the main continuum.
 
 ```{r}
-ggsave(here("results/images/PCA_downsampling.png"), pca_downsampling_plot)
+ggsave(here("results/images/08_PCA_downsampling.png"), pca_downsampling_plot)
 ```
