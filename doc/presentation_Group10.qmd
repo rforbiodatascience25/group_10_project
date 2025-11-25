@@ -1,5 +1,6 @@
 ---
 title: "Group_10"
+author: "Eden Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
 format: revealjs
 editor: visual
 ---
