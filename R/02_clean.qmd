@@ -20,7 +20,7 @@ library(here)
 Handling of different types of NAs
 
 ```{r}
-mdr_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresictance.csv"),
+mdr_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresistance.csv"),
   na.strings = c("", " ", "NA", "?", "missing", "unknown", "None", "error"))
 ```
 
