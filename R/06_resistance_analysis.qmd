@@ -4,8 +4,6 @@ format: html
 editor: visual
 ---
 
-## Edene - s240875
-
 ⁠Creating a heatmap - raw bacteria column antibiotics - get pattern of resistance
 
 ## Running Code
@@ -36,11 +34,6 @@ data_long |>
 ```{r}
 data_long |>
   count(Antibiotic) 
-```
-
-```{r}
-write.csv(data_long, here("data/data_long.csv"), row.names = FALSE)
-
 ```
 
 ### fixing the data
