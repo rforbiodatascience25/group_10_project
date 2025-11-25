@@ -84,9 +84,11 @@ infect_plot1 <- tidy_lm |>
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(x = "Estimates (95% CIs)",
        y = "",
+       title = "Factors associated with infection frequency",
        color = "p-value < 0.05") +
   theme_minimal()
 
+ggsave(filename = "infect_plot1.png", plot = infect_plot1, path = here("results/images"), dpi = 300)
 infect_plot1
 ```
 
