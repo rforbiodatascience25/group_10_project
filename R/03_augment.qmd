@@ -13,7 +13,7 @@ library(here)
 ## Load Functions
 
 ```{r}
-source("99_proj_func.R")
+source(here("R/99_proj_func.R"))
 ```
 
 ## Load Data
