@@ -138,6 +138,18 @@ mdr_wide <- mdr_wide |>
 
 This is a dataframe in wide format with the variable *MDR*, including the resistance pattern using sparse encoding and ready for linear modelling and PCA.
 
+## Add Age Group Variable
+
+```{r}
+mdr_wide <- mdr_wide |> 
+  mutate(age_group = cut(
+         x = Age,
+         breaks = seq(from = 0,
+                      to = 90,
+                      by = 10),
+         include.lowest = TRUE))
+```
+
 ```{r}
 write.csv(mdr_wide, here("data/aug_wide_bacteria_data.csv"), row.names = FALSE)
 ```
