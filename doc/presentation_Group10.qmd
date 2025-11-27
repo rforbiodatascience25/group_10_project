@@ -26,6 +26,23 @@ htmltools::includeHTML(here::here("results/images/table1_resized.html"))
 
 ## Linear Model Infection frequency
 
+::::: columns
+::: {.column width="40%"}
+Linear models with infection frequency as the dependent variable
+
+| Model 1         | Model 2           | Model 3    | Model 4      |
+|-----------------|-------------------|------------|--------------|
+| Patient details | Bacterial species | MDR        | Multivariate |
+| p = 0.5394      | p = 0.03842       | p = 0.6002 | 0.08977      |
+:::
+
+::: {.column width="60%"}
+\![\] ("results/images/infect_plot1.png"){width = 100%}
+
+\![\]("results/images/infect_volcano.png"){width = 100%; margin-top:0.5rem}
+:::
+:::::
+
 ## Bacterial Resistance Heatmap
 
 This heatmap shows the frequency of resistance of different bacterial species to a range of antibiotics. Colors re\[resent the proportion of resistant isolates, with blue indicating low resistance, white intermediate and red high resistance.
