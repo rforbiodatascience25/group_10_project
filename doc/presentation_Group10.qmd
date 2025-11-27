@@ -1,7 +1,8 @@
 ---
 title: "Group_10"
 author: "Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
-format: revealjs
+format: revealjs:
+  slide-number: c/t
 editor: visual
 ---
 
@@ -23,11 +24,7 @@ htmltools::includeHTML(here::here("results/images/table1_resized.html"))
 
 ## Linear Model MDR
 
-## Linear Model Inf Freq
-
-![](images/infect_plot1.png){fig-align="center"}
-
-![](images/infect_volcano.png){fig-align="center"}
+## Linear Model Infection frequency
 
 ## Bacterial Resistance Heatmap
 
