@@ -1,9 +1,13 @@
 ---
-title: "Group_10"
-author: "Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
+title: "Antibiotic Resistance"
+subtitle: "Project Group 10"
+author: "Edene Levine · Molly Hong-Minh · Pablo Vivero · Vinit Nilesh Vasa"
 format: 
   revealjs:
     slide-number: c/t
+    title-slide-attributes:
+      data-background-color: "#003049"
+      data-background-opacity: "1"
 editor: visual
 ---
 
