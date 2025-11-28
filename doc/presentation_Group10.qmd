@@ -17,24 +17,22 @@ Aim:
 
 -   Perform PCA to identify clustering based on resistance profiles
 
-At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
+[**Data:** https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data]{style="font-size: 70%;"}
 
-## Data & Processing
+## Data Processing & Description
 
-:::::: columns
-:::: {.column width="40%"}
-::: incremental
--   **Cleaning Data**
+::::::::: columns
+:::::::: {.column width="40%"}
+:::: incremental
+-   [<strong>Cleaning Data</strong>]{style="font-size:90%;"}
     -   Load data
     -   Remove NAs, duplicates & unnecessary columns
     -   Identify naming inconsistencies and rename accordingly
-:::
-::::
 
 ::: {.column width="60%"}
-images.
+![](images/04_Age_Gender.png)
 :::
-::::::
+::::
 
 ## Data Argument
 
@@ -72,3 +70,5 @@ Linear models with infection frequency as the dependent variable
 Heatmap shows antibiotic resistance across species, with *E. coli* and *K. pneumoniae* highly resistant (red), most others sensitive (blue), and some antibiotics effective across multiple species.
 
 ## PCA
+::::::::
+:::::::::
