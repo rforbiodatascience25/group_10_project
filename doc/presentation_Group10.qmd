@@ -49,6 +49,7 @@ images.
 -   Converted variables to factors and added age groups
 
 -   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv
+{.incremental}
 
 ## Linear Model MDR
 
@@ -93,8 +94,12 @@ Linear models with infection frequency as the dependent variable
 
 ## Bacterial Resistance Heatmap
 
-![](images/heatmap_resistance.png){fig-align="center" width="6000"}
+![](images/heatmap_resistance.png){fig-align="center" width="8000"}
 
-Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.
+<p style="text-align:center; font-size:14pt;">
+Shows resistance patterns across bacterial species using the long-format dataset: 
+E. coli and K. pneumoniae show the highest resistance (red), most other species remain 
+largely sensitive (blue), and several antibiotics stay effective across multiple species.
+</p>
 
 ## PCA
