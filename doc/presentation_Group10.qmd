@@ -23,8 +23,9 @@ Aim:
 
 :::::: columns
 :::: {.column width="40%"}
+**Cleaning Data**
+
 ::: incremental
--   \*\* Cleaning Data\*\*
 -   Load data
 -   Remove NAs, duplicates & unnecessary columns
 -   Identify naming inconsistencies and rename accordingly
@@ -48,11 +49,11 @@ Aim:
 ## Linear Model MDR
 
 ::::: columns
-::: column
+::: {.column width="40%"}
 [To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.]{style="font-size:0.8em"}
 :::
 
-::: column
+::: {.column width="60%"}
 We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.
 
 Example of the model specification in R:

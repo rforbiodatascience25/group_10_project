@@ -416,9 +416,9 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <h2>Data Processing &amp; Description</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
+<p><strong>Cleaning Data</strong></p>
 <div>
 <ul>
-<li class="fragment">** Cleaning Data**</li>
 <li class="fragment">Load data</li>
 <li class="fragment">Remove NAs, duplicates &amp; unnecessary columns</li>
 <li class="fragment">Identify naming inconsistencies and rename accordingly</li>
@@ -442,9 +442,9 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <section id="linear-model-mdr" class="slide level2">
 <h2>Linear Model MDR</h2>
 <div class="columns">
-<div class="column">
+<div class="column" style="width:40%;">
 <p><span style="font-size:0.8em">To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.</span></p>
-</div><div class="column">
+</div><div class="column" style="width:60%;">
 <p>We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.</p>
 <p>Example of the model specification in R:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
