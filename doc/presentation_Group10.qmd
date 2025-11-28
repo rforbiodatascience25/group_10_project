@@ -32,7 +32,7 @@ At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddi
 ::::
 
 ::: {.column width="60%"}
-images. 
+images.
 :::
 ::::::
 
