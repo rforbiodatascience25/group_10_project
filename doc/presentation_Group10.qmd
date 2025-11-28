@@ -105,7 +105,7 @@ Linear models with infection frequency as the dependent variable
 
 ![](images/heatmap_resistance.png){fig-align="center" width="8000"}
 
-<p style="text-align:center; font-size:14pt;">
+<p style="font-size:70%; text-align:center;">
 
 Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.
 
