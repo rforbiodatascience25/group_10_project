@@ -21,8 +21,8 @@ Aim:
 
 ## Data Processing & Description
 
-::::::::: columns
-:::::::: {.column width="40%"}
+:::::::::::: columns
+::::::::::: {.column width="40%"}
 :::: incremental
 -   [<strong>Cleaning Data</strong>]{style="font-size:90%;"}
     -   Load data
@@ -95,5 +95,5 @@ Shows resistance patterns across bacterial species using the long-format dataset
 </p>
 
 ## PCA
-::::::::
-:::::::::
+:::::::::::
+::::::::::::
