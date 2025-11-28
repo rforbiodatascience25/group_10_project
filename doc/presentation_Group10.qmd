@@ -21,18 +21,35 @@ Aim:
 
 ## Data Processing & Description
 
-:::::::::::: columns
-::::::::::: {.column width="40%"}
-:::: incremental
+:::::::::::::::::: columns
+::::::::::::::::: {.column width="40%"}
+:::::::::::::::: incremental
 -   [<strong>Cleaning Data</strong>]{style="font-size:90%;"}
     -   Load data
     -   Remove NAs, duplicates & unnecessary columns
     -   Identify naming inconsistencies and rename accordingly
 
-::: {.column width="60%"}
-![](images/04_Age_Gender.png)
+::::::::: {.column width="60%"}
+::::: columns
+::: {.column width="50%"}
+![](images/04_Age_Gender.png){width="100%"}
 :::
-::::
+
+::: {.column width="50%"}
+![](images/04_Species.png){width="100%"}
+:::
+:::::
+
+::::: columns
+::: {.column width="50%"}
+![](images/04_Characteristics.png)
+:::
+
+::: {.column width="50%"}
+![](images/04_Resistance_Profile.png)
+:::
+:::::
+:::::::::
 
 ## Data Argument
 
@@ -95,5 +112,6 @@ Shows resistance patterns across bacterial species using the long-format dataset
 </p>
 
 ## PCA
-:::::::::::
-::::::::::::
+::::::::::::::::
+:::::::::::::::::
+::::::::::::::::::
