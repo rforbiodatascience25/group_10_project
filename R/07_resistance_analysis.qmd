@@ -82,10 +82,10 @@ heatmap_plot <- ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = f
   theme_minimal() +
   theme(
     legend.position = "bottom",
-    axis.text.x = element_text(angle = 90, hjust = 1, size = 10),
-    axis.text.y = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    plot.title = element_text(face = "bold")
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 15),
+    axis.text.y = element_text(size = 15),
+    axis.title = element_text(face = "bold", size = 17),
+    plot.title = element_text(face = "bold", size = 20)
   ) +
   labs(title = "Resistance of the Bacteria to the Antibiotics", fill = "Frequency")
 
