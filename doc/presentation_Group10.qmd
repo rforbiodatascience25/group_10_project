@@ -84,22 +84,22 @@ linear_model <- lm(
 
 ## Linear Model Infection frequency
 
-::::: columns
+:::: {.columns}
+
 ::: {.column width="40%"}
-Linear models with infection frequency as the dependent variable
+::: {style="max-width:100%; font-size:0.9rem; overflow:auto;"}
 
 | Model 1         | Model 2           | Model 3    | Model 4      |
 |-----------------|-------------------|------------|--------------|
 | Patient details | Bacterial species | MDR        | Multivariate |
-| p = 0.5394      | p = 0.03842       | p = 0.6002 | 0.08977      |
+| p = 0.5394      | p = 0.03842       | p = 0.6002 | p = 0.08977  |
+:::
 :::
 
 ::: {.column width="60%"}
-![](images/infect_plot1.png)
-
-![](images/infect_volcano.png)
+![](images/infect_plot1.png){ style="width:100% }
 :::
-:::::
+:::: 
 
 ## Bacterial Resistance Heatmap
 
