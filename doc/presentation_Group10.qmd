@@ -50,29 +50,19 @@ images.
 
 -   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv
 
-## Describe
-
-```{r, results='asis'}
-htmltools::includeHTML(here::here("results/images/table1_resized.html"))
-```
-
-
 ## Linear Model MDR
-::::::: columns
+
+::::: columns
 ::: column
-<span style="font-size:0.8em">To investigate which factors are associated with multidrug resistance (MDR),
-we fitted a linear model with MDR as the outcome and both clinical and
-microbiological variables as predictors.</span>
+[To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.]{style="font-size:0.8em"}
 :::
 
 ::: column
-
-We then used the model coefficients to identify which bacteria and patient
-characteristics are associated with higher MDR.
+We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.
 
 Example of the model specification in R:
 
-```r
+``` r
 linear_model <- lm(
   MDR ~ Age + Gender + Species + Diabetes + Hypertension +
     Hospital_before + Infection_Freq,
@@ -80,7 +70,7 @@ linear_model <- lm(
 )
 ```
 :::
-:::
+:::::
 
 ## Linear Model Infection frequency
 
