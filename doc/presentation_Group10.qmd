@@ -7,13 +7,34 @@ format:
 editor: visual
 ---
 
-# Antibiotic Resistance
+## Antibiotic Resistance
+
+Aim:
+
+-   Explore antibiotic resistance profile across species
+
+-   Compare resistance profiles and assess the influence of different variables
+
+-   Perform PCA to identify clustering based on resistance profiles
 
 At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
 
-## Loading Data
+## Data & Processing
 
-## Cleaning the data
+:::::: columns
+:::: {.column width="40%"}
+::: incremental
+-   **Cleaning Data**
+    -   Load data
+    -   Remove NAs, duplicates & unnecessary columns
+    -   Identify naming inconsistencies and rename accordingly
+:::
+::::
+
+::: {.column width="60%"}
+images. 
+:::
+::::::
 
 ## Data Argument
 
