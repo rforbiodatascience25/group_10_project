@@ -1,8 +1,9 @@
 ---
 title: "Group_10"
 author: "Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vinit Nilesh Vasa (s242582)"
-format: revealjs:
-  slide-number: c/t
+format: 
+  revealjs:
+    slide-number: c/t
 editor: visual
 ---
 
