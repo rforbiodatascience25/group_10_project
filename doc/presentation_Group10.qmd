@@ -36,13 +36,34 @@ Aim:
 
 ## Data Argument
 
-## Describe
-
-```{r, results='asis'}
-htmltools::includeHTML(here::here("results/images/table1_resized.html"))
-```
+-   Loaded cleaned bacteria dataset
+-   Added antibiotic names and classes
+-   Reshaped to long format and joined tables
+-   Created MDR score (R = 1, I = 0.5, S = 0)
+-   Converted variables to factors and added age groups
+-   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv {.incremental}
 
 ## Linear Model MDR
+
+::::: columns
+::: column
+[To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.]{style="font-size:0.8em"}
+:::
+
+::: column
+We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.
+
+Example of the model specification in R:
+
+``` r
+linear_model <- lm(
+  MDR ~ Age + Gender + Species + Diabetes + Hypertension +
+    Hospital_before + Infection_Freq,
+  data = MDR_df
+)
+```
+:::
+:::::
 
 ## Linear Model Infection frequency
 
@@ -65,9 +86,13 @@ Linear models with infection frequency as the dependent variable
 
 ## Bacterial Resistance Heatmap
 
-![](images/heatmap_resistance.png){fig-align="center" width="4500"}
+![](images/heatmap_resistance.png){fig-align="center" width="8000"}
 
-Heatmap shows antibiotic resistance across species, with *E. coli* and *K. pneumoniae* highly resistant (red), most others sensitive (blue), and some antibiotics effective across multiple species.
+<p style="text-align:center; font-size:14pt;">
+
+Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.
+
+</p>
 
 ## PCA
 ::::::::

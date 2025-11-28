@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="presentation_Group10_files/libs/revealjs/dist/theme/quarto.css">
   <link href="presentation_Group10_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -337,19 +402,44 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 </div>
 
 </section>
-<section>
-<section id="antibiotic-resistance" class="title-slide slide level1 center">
-<h1>Antibiotic Resistance</h1>
+<section id="antibiotic-resistance" class="slide level2">
+<h2>Antibiotic Resistance</h2>
+<p>Aim:</p>
+<ul>
+<li><p>Explore antibiotic resistance profile across species</p></li>
+<li><p>Compare resistance profiles and assess the influence of different variables</p></li>
+<li><p>Perform PCA to identify clustering based on resistance profiles</p></li>
+</ul>
 <p>At this project we used data from: <a href="https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data" class="uri">https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data</a></p>
 </section>
-<section id="loading-data" class="slide level2">
-<h2>Loading Data</h2>
-</section>
-<section id="cleaning-the-data" class="slide level2">
-<h2>Cleaning the data</h2>
+<section id="data-processing" class="slide level2">
+<h2>Data &amp; Processing</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div>
+<ul>
+<li class="fragment"><strong>Cleaning Data</strong>
+<ul>
+<li class="fragment">Load data</li>
+<li class="fragment">Remove NAs, duplicates &amp; unnecessary columns</li>
+<li class="fragment">Identify naming inconsistencies and rename accordingly</li>
+</ul></li>
+</ul>
+</div>
+</div><div class="column" style="width:60%;">
+<p>images.</p>
+</div></div>
 </section>
 <section id="data-argument" class="slide level2">
 <h2>Data Argument</h2>
+<ul>
+<li><p>Loaded cleaned bacteria datase</p></li>
+<li><p>Added antibiotic names and classes</p></li>
+<li><p>Reshaped to long format and joined tables</p></li>
+<li><p>Created MDR score (R = 1, I = 0.5, S = 0)</p></li>
+<li><p>Converted variables to factors and added age groups</p></li>
+<li><p>Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv</p></li>
+</ul>
 </section>
 <section id="describe" class="slide level2">
 <h2>Describe</h2>
@@ -1439,6 +1529,18 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 </section>
 <section id="linear-model-mdr" class="slide level2">
 <h2>Linear Model MDR</h2>
+<div class="columns">
+<div class="column">
+<p><span style="font-size:0.8em">To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.</span></p>
+</div><div class="column">
+<p>We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.</p>
+<p>Example of the model specification in R:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb1-2"><a href=""></a>  MDR <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Species <span class="sc">+</span> Diabetes <span class="sc">+</span> Hypertension <span class="sc">+</span></span>
+<span id="cb1-3"><a href=""></a>    Hospital_before <span class="sc">+</span> Infection_Freq,</span>
+<span id="cb1-4"><a href=""></a>  <span class="at">data =</span> MDR_df</span>
+<span id="cb1-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
 </section>
 <section id="linear-model-infection-frequency" class="slide level2">
 <h2>Linear Model Infection frequency</h2>
@@ -1477,9 +1579,11 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <section id="bacterial-resistance-heatmap" class="slide level2">
 <h2>Bacterial Resistance Heatmap</h2>
 
-<img data-src="images/heatmap_resistance.png" class="quarto-figure quarto-figure-center r-stretch"><p style="font-size:14pt">
-</p><p>Heatmap shows antibiotic resistance across species, with <em>E. coli</em> and <em>K. pneumoniae</em> highly resistant (red), most others sensitive (blue), and some antibiotics effective across multiple species.</p>
-<p></p>
+<<<<<<< HEAD
+<img data-src="images/heatmap_resistance.png" class="quarto-figure quarto-figure-center r-stretch" width="4500"><p>Heatmap shows antibiotic resistance across species, with <em>E. coli</em> and <em>K. pneumoniae</em> highly resistant (red), most others sensitive (blue), and some antibiotics effective across multiple species.</p>
+=======
+<img data-src="images/heatmap_resistance.png" class="quarto-figure quarto-figure-center r-stretch" width="4500"><p>Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.</p>
+>>>>>>> f42fb7e53567b51f31e92fb41fb25749facce396
 </section>
 <section id="pca" class="slide level2">
 <h2>PCA</h2>
@@ -1488,7 +1592,7 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
