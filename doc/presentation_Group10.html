@@ -410,26 +410,24 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <li><p>Compare resistance profiles and assess the influence of different variables</p></li>
 <li><p>Perform PCA to identify clustering based on resistance profiles</p></li>
 </ul>
-<p>At this project we used data from: <a href="https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data" class="uri">https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data</a></p>
+<p><span style="font-size: 70%;"><strong>Data:</strong> https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data</span></p>
 </section>
-<section id="data-processing" class="slide level2">
-<h2>Data &amp; Processing</h2>
+<section id="data-processing-description" class="slide level2">
+<h2>Data Processing &amp; Description</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
 <div>
 <ul>
-<li class="fragment"><strong>Cleaning Data</strong>
+<li class="fragment"><span style="font-size:90%;"><strong>Cleaning Data</strong></span>
 <ul>
 <li class="fragment">Load data</li>
 <li class="fragment">Remove NAs, duplicates &amp; unnecessary columns</li>
 <li class="fragment">Identify naming inconsistencies and rename accordingly</li>
 </ul></li>
 </ul>
-</div>
-</div><div class="column" style="width:60%;">
-<p>images.</p>
+<div class="column" style="width:60%;">
+<p><img data-src="images/04_Age_Gender.png"></p>
 </div></div>
-</section>
 <section id="data-argument" class="slide level2">
 <h2>Data Argument</h2>
 <ul>
@@ -460,7 +458,7 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <h2>Linear Model Infection frequency</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p>Linear models with infection frequency as the dependent variable</p>
+<div style="max-width:100%; font-size:0.9rem; overflow:auto;">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -481,24 +479,30 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <td>p = 0.5394</td>
 <td>p = 0.03842</td>
 <td>p = 0.6002</td>
-<td>0.08977</td>
+<td>p = 0.08977</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div><div class="column" style="width:60%;">
-<p><img data-src="images/infect_plot1.png"></p>
-<p><img data-src="images/infect_volcano.png"></p>
+<p><img data-src="images/infect_plot1.png" style="&quot;width:100%"></p>
 </div></div>
 </section>
 <section id="bacterial-resistance-heatmap" class="slide level2">
 <h2>Bacterial Resistance Heatmap</h2>
-
-<img data-src="images/heatmap_resistance.png" class="quarto-figure quarto-figure-center r-stretch" width="8000"><p style="text-align:center; font-size:14pt;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/heatmap_resistance.png" class="quarto-figure quarto-figure-center" width="8000"></p>
+</figure>
+</div>
+<p style="font-size:70%; text-align:center;">
 </p><p>Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.</p>
 <p></p>
 </section>
 <section id="pca" class="slide level2">
 <h2>PCA</h2>
+</section>
+</div></div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
