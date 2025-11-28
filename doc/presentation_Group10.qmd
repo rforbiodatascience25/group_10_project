@@ -89,7 +89,7 @@ linear_model <- lm(
 
 ![](images/heatmap_resistance.png){fig-align="center"}
 
-[Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.]{style="font-size: 70%;"}
+[Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.]{style="font-size: 50%;"}
 
 </p>
 
