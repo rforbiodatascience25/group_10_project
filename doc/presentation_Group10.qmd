@@ -21,20 +21,20 @@ Aim:
 
 ## Data Processing & Description
 
-:::: columns
-::: {.column width="40%"}
+:::::: columns
+:::: {.column width="40%"}
 ::: incremental
 -   \*\* Cleaning Data\*\*
 -   Load data
 -   Remove NAs, duplicates & unnecessary columns
 -   Identify naming inconsistencies and rename accordingly
 :::
-:::
+::::
 
 ::: {.column width="60%"}
 ![](images/04_Age_Gender.png){width="100%"}
 :::
-::::
+::::::
 
 ## Data Augment
 
@@ -47,7 +47,7 @@ Aim:
 
 ## Linear Model MDR
 
-:::: columns
+::::: columns
 ::: column
 [To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.]{style="font-size:0.8em"}
 :::
@@ -65,12 +65,12 @@ linear_model <- lm(
 )
 ```
 :::
-::::
+:::::
 
 ## Linear Model Infection frequency
 
-:::: columns
-::: {.column width="40%"}
+:::::: columns
+:::: {.column width="40%"}
 ::: {style="max-width:100%; font-size:0.9rem; overflow:auto;"}
 | Model 1         | Model 2           | Model 3    | Model 4      |
 |-----------------|-------------------|------------|--------------|
@@ -82,7 +82,7 @@ linear_model <- lm(
 ::: {.column width="60%"}
 ![](images/infect_plot1.png){style="\"width:100%"}
 :::
-::::
+::::::
 
 ## Bacterial Resistance Heatmap
 
