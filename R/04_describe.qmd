@@ -99,7 +99,7 @@ p1  <- mdr_wide |>
         y = "Count",
         title = "Age Distribution by Gender") +
   theme(plot.title = element_text(hjust = 0.5, size = 20),
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14))
 
@@ -128,7 +128,7 @@ p2 <- mdr_data |>
         y = "Count",
         title = "Species Distribution") +
   theme(plot.title = element_text(hjust = 0.5, size = 20),
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
         axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         legend.position = "none")
@@ -149,7 +149,7 @@ p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
        x = "Species",
        y = "Age") +
   theme(plot.title = element_text(hjust = 0.5, size = 20),
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 14),
         legend.position = "none")
@@ -199,7 +199,7 @@ p9 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
   ) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 18),
-    axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
     axis.title.x = element_text(size = 14),
     axis.title.y = element_text(size = 14)
   )
