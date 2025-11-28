@@ -109,5 +109,4 @@ mdr_data <- mdr_data |>
 
 ```{r}
 write.csv(mdr_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
-
 ```
