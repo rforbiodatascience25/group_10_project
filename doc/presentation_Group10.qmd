@@ -38,9 +38,9 @@ Linear models with infection frequency as the dependent variable
 :::
 
 ::: {.column width="60%"}
-\![\] ("results/images/infect_plot1.png"){width = 100%}
+![] ("results/images/infect_plot1.png"){width = 100%}
 
-\![\]("results/images/infect_volcano.png"){width = 100%; margin-top:0.5rem}
+![]("results/images/infect_volcano.png"){width = 100%; margin-top:0.5rem}
 :::
 :::::
 
