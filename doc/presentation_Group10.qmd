@@ -38,13 +38,12 @@ images.
 
 ## Data Argument
 
-- Loaded cleaned bacteria dataset
-- Added antibiotic names and classes
-- Reshaped to long format and joined tables
-- Created MDR score (R = 1, I = 0.5, S = 0)
-- Converted variables to factors and added age groups
-- Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv
-{.incremental}
+-   Loaded cleaned bacteria dataset
+-   Added antibiotic names and classes
+-   Reshaped to long format and joined tables
+-   Created MDR score (R = 1, I = 0.5, S = 0)
+-   Converted variables to factors and added age groups
+-   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv {.incremental}
 
 ## Linear Model MDR
 
