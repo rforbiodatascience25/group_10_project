@@ -9,7 +9,7 @@ editor: visual
 
 # **PCA of Antibiotic Resistance Patterns Across Different Species**
 
-To explore shared patterns of antibiotic resistance across bacterial species, we performed a Principal Component Analysis (PCA) on the numeric resistance profiles. This approach reveals the main axes of variation in multidrug resistance and allows us to visualize whether species cluster according to their resistance signatures.
+To explore shared patterns of antibiotic resistance across bacterial species, we performed a Principal Component Analysis (PCA) on the numeric resistance profiles. This approach reveals the main axes of variation in multi-drug resistance and allows us to visualize whether species cluster according to their resistance signatures.
 
 ## Load Libraries
 

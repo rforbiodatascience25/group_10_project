@@ -131,4 +131,70 @@ tidy_lm <- tidy(linear_model,
 
 </p>
 
-## PCA
+## PCA {.smaller}
+
+Identify shared patterns of antibiotic resistance across bacterial species.
+
+:::::: columns
+:::: {.column width="50%"}
+### [Workflow]{style="font-size:0.6em"}
+
+::: incremental
+-   **`select()`**: extracts only the antibiotic-resistance columns used for PCA
+-   **`prcomp()`**: performs the PCA with variable scaling
+-   **`augment()`**: attaches PCA scores (PC1, PC2…) back to the original dataset
+-   **`count()`** — determines number of isolates per species
+-   **`slice_sample()`**: downsamples species to equal sizes for balanced PCA
+:::
+::::
+
+::: {.column width="50%"}
+### [Code]{style="font-size:0.6em"}
+
+``` r
+#Variable selection and PCA
+antibiotics_cols <- colnames(MDR_df)[c(8:(ncol(MDR_df)-1))]
+
+pca_fit <- MDR_df |>
+  select(all_of(antibiotics_cols)) |> 
+  prcomp(scale = TRUE)
+     
+     ...
+
+#Augment the original dataset   
+pca_all_plot <- pca_fit |> 
+  augment(MDR_df)
+  
+     ...
+     
+#Downsampling
+min_n <- MDR_df |>
+  count(Species) |> 
+  summarise(min(n)) |> 
+  pull()
+
+balanced_df <- MDR_df |>
+  group_by(Species) |>
+  slice_sample(n = min_n) |>
+  ungroup()
+```
+:::
+::::::
+
+## PCA {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+#### Before downsampling
+
+![](images/08_PCA_all.png){style="\"width:100%"}
+:::
+
+::: {.column width="50%"}
+#### After downsampling
+
+![](images/08_PCA_downsampling.png){style="\"width:100%"}
+:::
+:::::
+
+[After balancing species counts, the PCA shows largely shared resistance patterns across taxa, with only a few species, such as P. aeruginosa and S. marcescens, forming distinct clusters separate from the main E. coli-dominated continuum.]{style="font-size:0.7em; text-align:center; display:block;"}

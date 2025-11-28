@@ -527,8 +527,61 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <img data-src="images/heatmap_resistance.png" class="quarto-figure quarto-figure-center r-stretch"><p><span style="font-size: 50%;">Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.</span></p>
 <p></p>
 </section>
-<section id="pca" class="slide level2">
+<section id="pca" class="slide level2 smaller">
 <h2>PCA</h2>
+<p>Identify shared patterns of antibiotic resistance across bacterial species.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="workflow-1"><span style="font-size:0.6em">Workflow</span></h3>
+<div>
+<ul>
+<li class="fragment"><strong><code>select()</code></strong>: extracts only the antibiotic-resistance columns used for PCA</li>
+<li class="fragment"><strong><code>prcomp()</code></strong>: performs the PCA with variable scaling</li>
+<li class="fragment"><strong><code>augment()</code></strong>: attaches PCA scores (PC1, PC2…) back to the original dataset</li>
+<li class="fragment"><strong><code>count()</code></strong> — determines number of isolates per species</li>
+<li class="fragment"><strong><code>slice_sample()</code></strong>: downsamples species to equal sizes for balanced PCA</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="code-1"><span style="font-size:0.6em">Code</span></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co">#Variable selection and PCA</span></span>
+<span id="cb2-2"><a href=""></a>antibiotics_cols <span class="ot">&lt;-</span> <span class="fu">colnames</span>(MDR_df)[<span class="fu">c</span>(<span class="dv">8</span><span class="sc">:</span>(<span class="fu">ncol</span>(MDR_df)<span class="sc">-</span><span class="dv">1</span>))]</span>
+<span id="cb2-3"><a href=""></a></span>
+<span id="cb2-4"><a href=""></a>pca_fit <span class="ot">&lt;-</span> MDR_df <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href=""></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(antibiotics_cols)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href=""></a>  <span class="fu">prcomp</span>(<span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-7"><a href=""></a>     </span>
+<span id="cb2-8"><a href=""></a>     ...</span>
+<span id="cb2-9"><a href=""></a></span>
+<span id="cb2-10"><a href=""></a><span class="co">#Augment the original dataset   </span></span>
+<span id="cb2-11"><a href=""></a>pca_all_plot <span class="ot">&lt;-</span> pca_fit <span class="sc">|&gt;</span> </span>
+<span id="cb2-12"><a href=""></a>  <span class="fu">augment</span>(MDR_df)</span>
+<span id="cb2-13"><a href=""></a>  </span>
+<span id="cb2-14"><a href=""></a>     ...</span>
+<span id="cb2-15"><a href=""></a>     </span>
+<span id="cb2-16"><a href=""></a><span class="co">#Downsampling</span></span>
+<span id="cb2-17"><a href=""></a>min_n <span class="ot">&lt;-</span> MDR_df <span class="sc">|&gt;</span></span>
+<span id="cb2-18"><a href=""></a>  <span class="fu">count</span>(Species) <span class="sc">|&gt;</span> </span>
+<span id="cb2-19"><a href=""></a>  <span class="fu">summarise</span>(<span class="fu">min</span>(n)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-20"><a href=""></a>  <span class="fu">pull</span>()</span>
+<span id="cb2-21"><a href=""></a></span>
+<span id="cb2-22"><a href=""></a>balanced_df <span class="ot">&lt;-</span> MDR_df <span class="sc">|&gt;</span></span>
+<span id="cb2-23"><a href=""></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span></span>
+<span id="cb2-24"><a href=""></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> min_n) <span class="sc">|&gt;</span></span>
+<span id="cb2-25"><a href=""></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+</section>
+<section id="pca-1" class="slide level2 smaller">
+<h2>PCA</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h4 id="before-downsampling">Before downsampling</h4>
+<p><img data-src="images/08_PCA_all.png" style="&quot;width:100%"></p>
+</div><div class="column" style="width:50%;">
+<h4 id="after-downsampling">After downsampling</h4>
+<p><img data-src="images/08_PCA_downsampling.png" style="&quot;width:100%"></p>
+</div></div>
+<p><span style="font-size:0.7em; text-align:center; display:block;">After balancing species counts, the PCA shows largely shared resistance patterns across taxa, with only a few species, such as P. aeruginosa and S. marcescens, forming distinct clusters separate from the main E. coli-dominated continuum.</span></p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
