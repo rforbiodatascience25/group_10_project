@@ -7,15 +7,48 @@ format:
 editor: visual
 ---
 
-# Antibiotic Resistance
+## Antibiotic Resistance
+
+Aim:
+
+-   Explore antibiotic resistance profile across species
+
+-   Compare resistance profiles and assess the influence of different variables
+
+-   Perform PCA to identify clustering based on resistance profiles
 
 At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
 
-## Loading Data
+## Data & Processing
 
-## Cleaning the data
+:::::: columns
+:::: {.column width="40%"}
+::: incremental
+-   **Cleaning Data**
+    -   Load data
+    -   Remove NAs, duplicates & unnecessary columns
+    -   Identify naming inconsistencies and rename accordingly
+:::
+::::
+
+::: {.column width="60%"}
+images.
+:::
+::::::
 
 ## Data Argument
+
+-   Loaded cleaned bacteria datase
+
+-   Added antibiotic names and classes
+
+-   Reshaped to long format and joined tables
+
+-   Created MDR score (R = 1, I = 0.5, S = 0)
+
+-   Converted variables to factors and added age groups
+
+-   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv
 
 ## Describe
 
@@ -70,8 +103,8 @@ Linear models with infection frequency as the dependent variable
 
 ## Bacterial Resistance Heatmap
 
-![](images/heatmap_resistance.png){fig-align="center" width="4500"}
+![](images/heatmap_resistance.png){fig-align="center" width="6000"}
 
-Heatmap shows antibiotic resistance across species, with *E. coli* and *K. pneumoniae* highly resistant (red), most others sensitive (blue), and some antibiotics effective across multiple species.
+Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.
 
 ## PCA
