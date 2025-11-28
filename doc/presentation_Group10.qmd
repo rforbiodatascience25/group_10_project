@@ -46,27 +46,47 @@ Aim:
 -   Converted variables to factors and added age groups
 -   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv {.incremental}
 
-## Linear Model MDR
+## Linear Model MDR {.smaller}
 
-::::: columns
-::: {.column width="40%"}
-[To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.]{style="font-size:0.8em"}
+Analysis of how `age`, `gender`, `bacterial species`, `diabetes`, `hypertension`, `prior hospitalisation` and `infection frequency` influence the number of antibiotic resistances in a contracted infection using a linear model.
+
+:::::: columns
+:::: {.column width="50%"}
+### [Workflow]{style="font-size:0.6em"}
+
+::: incremental
+-   **`lm()`**: fits the linear model predicting MDR
+-   **`broom::tidy()`**: extracts coefficients, confidence intervals, and p-values
+-   **`mutate()`**: cleans variable names and adds significance flag
+-   **`stringr::str_replace()`**: standardises variable labels
 :::
+::::
 
-::: {.column width="60%"}
-We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.
-
-Example of the model specification in R:
+::: {.column width="50%"}
+### [Code]{style="font-size:0.6em"}
 
 ``` r
-linear_model <- lm(
-  MDR ~ Age + Gender + Species + Diabetes + Hypertension +
-    Hospital_before + Infection_Freq,
-  data = MDR_df
-)
+#Linear model
+linear_model <- MDR_df |> 
+  lm(formula = MDR ~ Age + Gender + Species + Diabetes + Hypertension + Hospital_before + Infection_Freq,
+     data = _)
+     
+     ...
+
+#Tidy format     
+tidy_lm <- tidy(linear_model, 
+     conf.int = TRUE,
+     conf.level = 0.95) |> 
+  mutate(term = str_replace(term, "Species", "")) |> 
+  mutate(term = str_replace(term, "Yes", "")) |> 
+  mutate(term = str_replace(term, "GenderM", "Gender_M")) |> 
+  mutate(term = str_replace(term, "Freq1", "Freq_1")) |>
+  mutate(term = str_replace(term, "Freq2", "Freq_2")) |>
+  mutate(term = str_replace(term, "Freq3", "Freq_3")) |> 
+  mutate(sig = factor(p.value < 0.05))
 ```
 :::
-:::::
+::::::
 
 ## Linear Model Infection frequency
 

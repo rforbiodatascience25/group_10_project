@@ -439,19 +439,40 @@ Edene Levine (s240875), Molly Hong-Minh (s242955), Pablo Fernandez (s243357), Vi
 <li>Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv {.incremental}</li>
 </ul>
 </section>
-<section id="linear-model-mdr" class="slide level2">
+<section id="linear-model-mdr" class="slide level2 smaller">
 <h2>Linear Model MDR</h2>
+<p>Analysis of how <code>age</code>, <code>gender</code>, <code>bacterial species</code>, <code>diabetes</code>, <code>hypertension</code>, <code>prior hospitalisation</code> and <code>infection frequency</code> influence the number of antibiotic resistances in a contracted infection using a linear model.</p>
 <div class="columns">
-<div class="column" style="width:40%;">
-<p><span style="font-size:0.8em">To investigate which factors are associated with multidrug resistance (MDR), we fitted a linear model with MDR as the outcome and both clinical and microbiological variables as predictors.</span></p>
-</div><div class="column" style="width:60%;">
-<p>We then used the model coefficients to identify which bacteria and patient characteristics are associated with higher MDR.</p>
-<p>Example of the model specification in R:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>linear_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb1-2"><a href=""></a>  MDR <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Species <span class="sc">+</span> Diabetes <span class="sc">+</span> Hypertension <span class="sc">+</span></span>
-<span id="cb1-3"><a href=""></a>    Hospital_before <span class="sc">+</span> Infection_Freq,</span>
-<span id="cb1-4"><a href=""></a>  <span class="at">data =</span> MDR_df</span>
-<span id="cb1-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="column" style="width:50%;">
+<h3 id="workflow"><span style="font-size:0.6em">Workflow</span></h3>
+<div>
+<ul>
+<li class="fragment"><strong><code>lm()</code></strong>: fits the linear model predicting MDR</li>
+<li class="fragment"><strong><code>broom::tidy()</code></strong>: extracts coefficients, confidence intervals, and p-values</li>
+<li class="fragment"><strong><code>mutate()</code></strong>: cleans variable names and adds significance flag</li>
+<li class="fragment"><strong><code>stringr::str_replace()</code></strong>: standardises variable labels</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="code"><span style="font-size:0.6em">Code</span></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co">#Linear model</span></span>
+<span id="cb1-2"><a href=""></a>linear_model <span class="ot">&lt;-</span> MDR_df <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href=""></a>  <span class="fu">lm</span>(<span class="at">formula =</span> MDR <span class="sc">~</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> Species <span class="sc">+</span> Diabetes <span class="sc">+</span> Hypertension <span class="sc">+</span> Hospital_before <span class="sc">+</span> Infection_Freq,</span>
+<span id="cb1-4"><a href=""></a>     <span class="at">data =</span> _)</span>
+<span id="cb1-5"><a href=""></a>     </span>
+<span id="cb1-6"><a href=""></a>     ...</span>
+<span id="cb1-7"><a href=""></a></span>
+<span id="cb1-8"><a href=""></a><span class="co">#Tidy format     </span></span>
+<span id="cb1-9"><a href=""></a>tidy_lm <span class="ot">&lt;-</span> <span class="fu">tidy</span>(linear_model, </span>
+<span id="cb1-10"><a href=""></a>     <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-11"><a href=""></a>     <span class="at">conf.level =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_replace</span>(term, <span class="st">"Species"</span>, <span class="st">""</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-13"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_replace</span>(term, <span class="st">"Yes"</span>, <span class="st">""</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-14"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_replace</span>(term, <span class="st">"GenderM"</span>, <span class="st">"Gender_M"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-15"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_replace</span>(term, <span class="st">"Freq1"</span>, <span class="st">"Freq_1"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-16"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_replace</span>(term, <span class="st">"Freq2"</span>, <span class="st">"Freq_2"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-17"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_replace</span>(term, <span class="st">"Freq3"</span>, <span class="st">"Freq_3"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-18"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">sig =</span> <span class="fu">factor</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="linear-model-infection-frequency" class="slide level2">
