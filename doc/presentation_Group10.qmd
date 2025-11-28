@@ -21,37 +21,23 @@ Aim:
 
 ## Data Processing & Description
 
-:::::::::::::::::: columns
-::::::::::::::::: {.column width="40%"}
-:::::::::::::::: incremental
--   [<strong>Cleaning Data</strong>]{style="font-size:90%;"}
-    -   Load data
-    -   Remove NAs, duplicates & unnecessary columns
-    -   Identify naming inconsistencies and rename accordingly
+:::: columns
+::: {.column width="40%"}
+::: {.incremental}
+- ** Cleaning Data**
+-   Load data
+-   Remove NAs, duplicates & unnecessary columns
+-   Identify naming inconsistencies and rename accordingly
+:::
+:::
 
-::::::::: {.column width="60%"}
-::::: columns
-::: {.column width="50%"}
+::: {.column width="60%"}
+
 ![](images/04_Age_Gender.png){width="100%"}
 :::
+::::
 
-::: {.column width="50%"}
-![](images/04_Species.png){width="100%"}
-:::
-:::::
-
-::::: columns
-::: {.column width="50%"}
-![](images/04_Characteristics.png)
-:::
-
-::: {.column width="50%"}
-![](images/04_Resistance_Profile.png)
-:::
-:::::
-:::::::::
-
-## Data Argument
+## Data Augment
 
 -   Loaded cleaned bacteria dataset
 -   Added antibiotic names and classes
@@ -105,13 +91,8 @@ linear_model <- lm(
 
 ![](images/heatmap_resistance.png){fig-align="center" width="8000"}
 
-<p style="font-size:70%; text-align:center;">
-
-Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.
+[Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.]{style="font-size: 70%;"}
 
 </p>
 
 ## PCA
-::::::::::::::::
-:::::::::::::::::
-::::::::::::::::::
