@@ -23,7 +23,31 @@ At this project we used data from: <https://www.kaggle.com/datasets/adilimadeddi
 htmltools::includeHTML(here::here("results/images/table1_resized.html"))
 ```
 
+
 ## Linear Model MDR
+::::::: columns
+::: column
+<span style="font-size:0.8em">To investigate which factors are associated with multidrug resistance (MDR),
+we fitted a linear model with MDR as the outcome and both clinical and
+microbiological variables as predictors.</span>
+:::
+
+::: column
+
+We then used the model coefficients to identify which bacteria and patient
+characteristics are associated with higher MDR.
+
+Example of the model specification in R:
+
+```r
+linear_model <- lm(
+  MDR ~ Age + Gender + Species + Diabetes + Hypertension +
+    Hospital_before + Infection_Freq,
+  data = MDR_df
+)
+```
+:::
+:::
 
 ## Linear Model Infection frequency
 
