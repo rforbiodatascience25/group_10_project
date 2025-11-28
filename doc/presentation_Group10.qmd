@@ -38,17 +38,12 @@ images.
 
 ## Data Argument
 
--   Loaded cleaned bacteria datase
-
--   Added antibiotic names and classes
-
--   Reshaped to long format and joined tables
-
--   Created MDR score (R = 1, I = 0.5, S = 0)
-
--   Converted variables to factors and added age groups
-
--   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv
+- Loaded cleaned bacteria dataset
+- Added antibiotic names and classes
+- Reshaped to long format and joined tables
+- Created MDR score (R = 1, I = 0.5, S = 0)
+- Converted variables to factors and added age groups
+- Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv
 {.incremental}
 
 ## Linear Model MDR
@@ -97,9 +92,9 @@ Linear models with infection frequency as the dependent variable
 ![](images/heatmap_resistance.png){fig-align="center" width="8000"}
 
 <p style="text-align:center; font-size:14pt;">
-Shows resistance patterns across bacterial species using the long-format dataset: 
-E. coli and K. pneumoniae show the highest resistance (red), most other species remain 
-largely sensitive (blue), and several antibiotics stay effective across multiple species.
+
+Shows resistance patterns across bacterial species using the long-format dataset: E. coli and K. pneumoniae show the highest resistance (red), most other species remain largely sensitive (blue), and several antibiotics stay effective across multiple species.
+
 </p>
 
 ## PCA
