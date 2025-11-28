@@ -88,6 +88,24 @@ tidy_lm <- tidy(linear_model,
 :::
 ::::::
 
+## Linear Model MDR {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+#### Forest Plot
+
+![](images/05_MDR_forest.png){style="\"width:100%"}
+:::
+
+::: {.column width="50%"}
+#### Volcano Plot
+
+![](images/05_MDR_volcano.png){style="\"width:100%"}
+:::
+:::::
+
+[Only bacterial species significantly affect MDR]{style="font-size:0.7em; text-align:center; display:block;"}
+
 ## Linear Model Infection frequency
 
 :::::: columns
