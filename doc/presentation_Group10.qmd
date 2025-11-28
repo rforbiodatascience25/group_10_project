@@ -46,7 +46,7 @@ Linear models with infection frequency as the dependent variable
 
 ## Bacterial Resistance Heatmap
 
-![](images/heatmap_resistance.png){fig-align="center"}
+![](images/heatmap_resistance.png){fig-align="center" width="4500"}
 
 Heatmap shows antibiotic resistance across species, with *E. coli* and *K. pneumoniae* highly resistant (red), most others sensitive (blue), and some antibiotics effective across multiple species.
 
