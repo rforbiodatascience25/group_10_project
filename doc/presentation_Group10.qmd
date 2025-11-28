@@ -21,9 +21,9 @@ Aim:
 
 ## Data Processing & Description
 
-:::::::::::::::::: columns
-::::::::::::::::: {.column width="40%"}
-:::::::::::::::: incremental
+::::::::::::::::::: columns
+:::::::::::::::::: {.column width="40%"}
+::::::::::::::::: incremental
 -   [<strong>Cleaning Data</strong>]{style="font-size:90%;"}
     -   Load data
     -   Remove NAs, duplicates & unnecessary columns
@@ -84,26 +84,24 @@ linear_model <- lm(
 
 ## Linear Model Infection frequency
 
-:::: {.columns}
-
-::: {.column width="40%"}
+:::::: columns
+:::: {.column width="40%"}
 ::: {style="max-width:100%; font-size:0.9rem; overflow:auto;"}
-
 | Model 1         | Model 2           | Model 3    | Model 4      |
 |-----------------|-------------------|------------|--------------|
 | Patient details | Bacterial species | MDR        | Multivariate |
 | p = 0.5394      | p = 0.03842       | p = 0.6002 | p = 0.08977  |
 :::
-:::
+::::
 
 ::: {.column width="60%"}
-![](images/infect_plot1.png){ style="width:100% }
+![](images/infect_plot1.png){style="\"width:100%"}
 :::
-:::: 
+::::::
 
 ## Bacterial Resistance Heatmap
 
-![](images/heatmap_resistance.png){fig-align="center" width="8000"}
+![](images/heatmap_resistance-01.png){fig-align="center"}
 
 <p style="font-size:70%; text-align:center;">
 
@@ -112,6 +110,6 @@ Shows resistance patterns across bacterial species using the long-format dataset
 </p>
 
 ## PCA
-::::::::::::::::
 :::::::::::::::::
 ::::::::::::::::::
+:::::::::::::::::::

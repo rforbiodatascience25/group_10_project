@@ -82,15 +82,15 @@ heatmap_plot <- ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = f
   theme_minimal() +
   theme(
     legend.position = "bottom",
-    axis.text.x = element_text(angle = 90, hjust = 1, size = 7),
-    axis.text.y = element_text(size = 7),
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 10),
+    axis.text.y = element_text(size = 10),
     axis.title = element_text(face = "bold"),
     plot.title = element_text(face = "bold")
   ) +
   labs(title = "Resistance of the Bacteria to the Antibiotics", fill = "Frequency")
 
 # Save the plot as PNG
-ggsave("heatmap_resistance.png", plot = heatmap_plot, width = 10, height = 8, dpi = 300)
+ggsave("/net/pupil1/home/people/s240875/projects/group_10_project/results/images/heatmap_resistance.png", plot = heatmap_plot, width = 13, height = 10, dpi = 300)
 
 heatmap_plot
 ```
