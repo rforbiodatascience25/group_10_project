@@ -27,7 +27,7 @@ editor: visual
 
 <br>
 
-[**Data:** https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data]{style="font-size: 60%;"}
+[**Data:** https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data]{style="font-size: 40%;"}
 :::
 
 ## Data Processing & Description {.smaller}
