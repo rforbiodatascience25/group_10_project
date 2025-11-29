@@ -696,7 +696,7 @@ model3 <- infect_db |>
 summary(model3)
 ```
 
-#### 
+#### Fourth model: Which is the main contributor for infection frequency?
 
 ```{r}
 model_full <- infect_db |> 
@@ -723,6 +723,10 @@ tidy_lm <- tidy(model_full,
 tidy_lm
 ```
 
+#### Visualization
+
+#### Forest plot
+
 ```{r}
 infect_plot1 <- tidy_lm |>
   filter(term != "(Intercept)") |>
@@ -746,6 +750,8 @@ tidy_lm <- tidy_lm |>
          is_significant = case_when(q.value <= 0.05 ~ "yes",
                                     q.value > 0.05 ~ "no"))
 ```
+
+#### Volcano plot
 
 ```{r}
 pl <- tidy_lm |>
