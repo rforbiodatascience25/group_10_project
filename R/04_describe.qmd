@@ -62,7 +62,6 @@ t1 <- table1(
 )
 
 html_table <- as.tags(t1) 
-save_html(html_table, file = here("results/images/04_table_1.html"))
 
 html_table
 
