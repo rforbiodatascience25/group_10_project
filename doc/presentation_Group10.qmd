@@ -57,7 +57,7 @@ library(table1)
 library(htmltools)
 
 # Load Data
-mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
+mdr_data <- read.csv(here("data/02_dat_clean.csv"))
 
 # Create table
 t1 <- table1(
