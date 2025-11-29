@@ -11,35 +11,144 @@ format:
 editor: visual
 ---
 
-## Antibiotic Resistance
+## Data & Aims {.small}
 
-Aim:
+**Dataset Overview:**  
+<span style="font-size:75%;">
+A collection of bacterial isolates with associated demographics, clinical factors, and antibiotic susceptibility results.
+</span>
 
--   Explore antibiotic resistance profile across species
+<div style="height:0.5em;"></div>
 
--   Compare resistance profiles and assess the influence of different variables
+::: fragment
+**Aims:**  
+<span style="font-size:75%;">
+- Explore antibiotic resistance profiles across species  
+- Compare resistance patterns across key variables  
+- Perform PCA to identify clustering based on resistance profiles 
+</span>
 
--   Perform PCA to identify clustering based on resistance profiles
+<br>
 
-[**Data:** https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data]{style="font-size: 70%;"}
+[**Data:** https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data]{style="font-size: 60%;"}
+:::
 
-## Data Processing & Description
 
-:::::: columns
-:::: {.column width="40%"}
-**Cleaning Data**
+## Data Processing & Description {.smaller}
+
+Data Loading, Cleaning & Overview
+
+::::::: columns
+:::: {.column width="50%"}
+### [Workflow]{style="font-size:0.6em"}
 
 ::: incremental
--   Load data
--   Remove NAs, duplicates & unnecessary columns
--   Identify naming inconsistencies and rename accordingly
+-   **`library(Rkaggle)`**: Load data directly from Kaggle
+-   **Clean Data**: Remove NAs, duplicates & unnecessary columns
+-   **Tidy Data**: Restructure data into tidy format
+-   **Renaming**: Identify naming inconsistencies & rename accordingly
+-   **Data Description**: `table1()` and `ggplot()`
 :::
 ::::
 
-::: {.column width="60%"}
-![](images/04_Age_Gender.png){width="100%"}
+:::: {.column width="50%"}
+::: fragment
+### Table 1 {style="font-size:1.0em"}
+
+```{r results='asis'}
+library(here)
+library(table1)
+library(htmltools)
+
+# Load Data
+mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
+
+# Create table
+t1 <- table1(
+  ~ Age + Gender + Diabetes + Hypertension + Hospital_before +
+    Infection_Freq +
+    AMX.AMP + AMC + CZ + FOX + CTX.CRO + IPM + GEN + AN +
+    Acide.nalidixique + ofx + CIP + C + Co.trimoxazole +
+    Furanes + colistine
+  | Species,
+  data = mdr_data
+)
+
+# Bigger table, smaller text
+div(
+  style = "
+    font-size: 0.45em;         /* make text smaller */
+    transform: scale(1.2);     /* make table itself bigger */
+    transform-origin: top left;
+    height: 350px;             /* vertical scroll box */
+    width: 100%;               
+    overflow: auto; 
+  ",
+  t1
+)
+
+```
 :::
-::::::
+::::
+:::::::
+
+## Data Processing & Description {.smaller}
+
+Data Loading, Cleaning & Overview
+
+:::: columns
+::: {.column width="50%"}
+### [Workflow]{style="font-size:0.6em"}
+
+-   **`library(Rkaggle)`**: Load data directly from Kaggle
+-   **Clean Data**: Remove NAs, duplicates & unnecessary columns
+-   **Tidy Data**: Restructure data into tidy format
+-   **Renaming**: Identify naming inconsistencies & rename accordingly
+-   **Data Description**: `table1()` and `ggplot()`
+:::
+
+::: {.column width="50%"}
+
+<div style="
+    text-align:right;
+    transform: scale(1.4);
+    transform-origin: top left;
+    margin-left: 90px;   /* change this value */
+">
+  <img src="images/04_Age_Gender.png" width="100%">
+</div>
+
+:::
+::::
+
+## Data Processing & Description {.smaller}
+
+Data Loading, Cleaning & Overview
+
+:::: columns
+::: {.column width="50%"}
+### [Workflow]{style="font-size:0.6em"}
+
+-   **`library(Rkaggle)`**: Load data directly from Kaggle
+-   **Clean Data**: Remove NAs, duplicates & unnecessary columns
+-   **Tidy Data**: Restructure data into tidy format
+-   **Renaming**: Identify naming inconsistencies & rename accordingly
+-   **Data Description**: `table1()` and `ggplot()`
+:::
+
+::: {.column width="50%"}
+
+<div style="
+    text-align:right;
+    transform: scale(1.4);
+    transform-origin: top left;
+    margin-left: 90px;   /* change this value */
+">
+  <img src="images/04_Species.png" width="100%">
+</div>
+
+:::
+::::
 
 ## Data Augment
 
