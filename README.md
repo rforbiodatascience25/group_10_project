@@ -75,7 +75,7 @@ Outputs:
 Saved to `results/images/`.
 
 
-## How to Run the Project
+
 
 
 
