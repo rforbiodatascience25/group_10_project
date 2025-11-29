@@ -4,6 +4,7 @@ subtitle: "Project Group 10"
 author: "Edene Levine · Molly Hong-Minh · Pablo Vivero · Vinit Nilesh Vasa"
 format: 
   revealjs:
+    self-contained: true
     slide-number: c/t
     title-slide-attributes:
       data-background-color: "#003049"
