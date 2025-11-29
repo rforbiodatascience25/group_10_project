@@ -17,15 +17,15 @@ To explore shared patterns of antibiotic resistance across bacterial species, we
 #| warning: false
 #| message: false
 
-library(tidyverse)
-library(here)
-library(broom)
+library("tidyverse")
+library("here")
+library("broom")
 ```
 
 ## Load Data
 
 ```{r}
-MDR_df <- read.csv(here("data/aug_wide_bacteria_data.csv"))
+MDR_df <- read.csv(here("data/03_dat_aug_wide.csv"))
 ```
 
 ## Convert Resistance Categories to Numeric

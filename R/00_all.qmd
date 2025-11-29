@@ -1,0 +1,1029 @@
+---
+title: "00_all"
+format: html
+---
+
+# 01_load
+
+## Uploading Data
+
+### Data
+
+Data for this project comes from: <https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data>
+
+### Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+library("RKaggle")
+```
+
+### Create Data Folder
+
+```{r}
+data_dir <- here("data")
+raw_data_dir <- here("data", "_raw")
+results_dir <- here("results")
+
+if( !dir.exists(data_dir) ){
+  dir.create(path = data_dir)
+}
+
+if( !dir.exists(raw_data_dir) ){
+  dir.create(path = raw_data_dir, recursive = TRUE)
+}
+
+if( !dir.exists(results_dir) ){
+  dir.create(path = results_dir)
+}
+```
+
+### Upload Data
+
+```{r}
+#| warning: false
+#| message: false
+
+raw_file <- here("data", "_raw", "Bacteria_dataset_Multiresistance.csv")
+
+# Download data from kaggle and save if not already present
+if (!file.exists(raw_file)) {
+  df <- RKaggle::get_dataset("adilimadeddinehosni/multi-resistance-antibiotic-susceptibility")
+  write_csv(df, raw_file)
+}
+```
+
+# 02_clean
+
+## Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+```
+
+## Load Functions
+
+```{r}
+source(here("R/99_proj_func.R"))
+```
+
+## Load Data
+
+Handling of different types of NAs
+
+```{r}
+mdr_data <- read.csv(here("data/_raw/Bacteria_dataset_Multiresistance.csv"),
+  na.strings = c("", " ", "NA", "?", "missing", "unknown", "None", "error"))
+```
+
+## Data Cleaning
+
+**Analyze for duplicates and select relevant columns**
+
+```{r}
+# Identify any duplicates to remove 
+dup_IDs <- mdr_data |>
+  add_count(ID, name = "n") |>
+  filter(n > 1)
+
+#No duplicates in the dataset
+dup_IDs
+
+mdr_data <- mdr_data |> 
+  select(-ID, -Name, -Email, -Address, -Collection_Date, -Notes) 
+```
+
+**Separate data into individual columns and remove NA rows**
+
+```{r}
+#| warning: false
+
+mdr_data <- mdr_data |> 
+  separate(age.gender,
+           into = c("Age", "Gender"),
+           sep = "/") |> 
+  separate(Souches, 
+           into = c("ID", "Species"),
+           sep = " ",
+           extra = "merge") |>  # only separate based on the first space 
+  select(-ID) |> 
+  filter(!(is.na(Species))) 
+```
+
+**Identify typos and inconsistencies in naming**
+
+```{r}
+#get_unique_counts is a function in 99_proj_func.R
+res <- map(colnames(mdr_data), 
+           ~ get_unique_counts(mdr_data, .x))
+
+res
+```
+
+**Rename accordingly**
+
+```{r}
+mdr_data <- mdr_data |> 
+  mutate(Species = case_when(
+  Species %in% c("E.cli", "E.coi", "E.coli", "E. coli") ~ "Escherichia coli",
+  Species %in% c("Klbsiella pneumoniae", "Klebsie.lla pneumoniae") ~ "Klebsiella pneumoniae",
+  Species %in% c("Enter.bacteria spp.", "Enteobacteria spp.") ~ "Enterobacteria spp.",
+  Species %in% c("Prot.eus mirabilis", "Protus mirabilis", "Proeus mirabilis") ~ "Proteus mirabilis",
+  TRUE ~ Species # Keep everything else unchanged 
+))
+
+mdr_data <- mdr_data |>
+  mutate(
+    Diabetes = case_when(
+      Diabetes == "True" ~ "Yes",
+      TRUE ~ Diabetes
+    ),
+    Hypertension = case_when(
+      Hypertension == "True" ~ "Yes",
+      TRUE ~ Hypertension
+    )
+  )
+
+#fix_resistance is a function in 99_proj_func.R
+mdr_data <- mdr_data |>
+  mutate(across(colnames(mdr_data)[c(8:ncol(mdr_data))], fix_resistance))
+```
+
+**Save the cleaned data**
+
+```{r}
+write.csv(mdr_data, here("data/02_dat_clean.csv"), row.names = FALSE)
+```
+
+# 03_augment
+
+## Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+```
+
+## Load Functions
+
+```{r}
+source(here("R/99_proj_func.R"))
+```
+
+## Load Data
+
+```{r}
+mdr_data <- read.csv(here("data/02_dat_clean.csv"))
+```
+
+## Create New Table with Name and Class of Antibiotics
+
+```{r}
+antibiotic_table <- data.frame(
+  Antibiotic = c(
+    "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
+    "GEN", "AN",
+    "Acide.nalidixique", "ofx", "CIP",
+    "C", "Co.trimoxazole", "Furanes", "colistine"
+  ),
+  Full_Name = c(
+    "Amoxicillin / Ampicillin",
+    "Amoxicillin + Clavulanic Acid",
+    "Cefazolin",
+    "Cefoxitin",
+    "Cefotaxime / Ceftriaxone",
+    "Imipenem",
+    "Gentamicin",
+    "Amikacin",
+    "Nalidixic Acid",
+    "Ofloxacin",
+    "Ciprofloxacin",
+    "Chloramphenicol",
+    "Trimethoprim + Sulfamethoxazole",
+    "Nitrofurantoin",
+    "Colistin"
+  ),
+  Class = c(
+    # β-lactams (Beta-lactams)
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+    "β-lactams (Beta-lactams)",
+
+    # Aminoglycosides (Aminosides)
+    "Aminoglycosides (Aminosides)",
+    "Aminoglycosides (Aminosides)",
+
+    # Quinolones / Fluoroquinolones
+    "Quinolones / Fluoroquinolones",
+    "Quinolones / Fluoroquinolones",
+    "Quinolones / Fluoroquinolones",
+
+    # Other Important Agents
+    "Other Important Agents",
+    "Other Important Agents",
+    "Other Important Agents",
+    "Other Important Agents"
+  ),
+  stringsAsFactors = FALSE
+)
+
+antibiotic_table
+```
+
+## Joining Antibiotic Table with MDR data
+
+```{r}
+Antibiotic = c(
+    "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
+    "GEN", "AN",
+    "Acide.nalidixique", "ofx", "CIP",
+    "C", "Co.trimoxazole", "Furanes", "colistine"
+  )
+
+# Pivot MDR Data to long form
+mdr_long <- mdr_data |>
+  pivot_longer(cols = all_of(Antibiotic),
+               names_to = "Antibiotic",
+               values_to = "Resistance")
+
+# Join Antibiotics table to mdr_long 
+mdr_joined <- mdr_long |> 
+    left_join(antibiotic_table, by="Antibiotic")
+```
+
+```{r}
+write.csv(mdr_joined, here("data/03_dat_aug_long.csv"), row.names = FALSE)
+```
+
+## MDR variable
+
+To make linear model we will need a MDR variable, which assigns a numerical score to the resistance profile of each isolate. For every antibiotic tested, we added **1 point** if the isolate was classified as *Resistant (R)* and **0.5 points** if it was classified as *Intermediate (I)*, while *Susceptible (S)* contributed **0 points**. By summing these values across all antibiotics for each sample, we obtained a continuous MDR score that reflects the degree of multidrug resistance.
+
+```{r}
+antibiotics_cols <- colnames(mdr_data)[c(8:ncol(mdr_data))]
+
+#Apply the case_when function to mutate every antibiotic column and sum into MDR variable
+#Count resistance is a function in 99_proj_func.R
+mdr_wide <- mdr_data |>
+  mutate(
+    across(antibiotics_cols, 
+           count_resistance)) |> 
+  mutate(MDR = rowSums(across(antibiotics_cols))) |> 
+  drop_na(Age, Gender, Species, Diabetes, Hypertension, Hospital_before, Infection_Freq, MDR)   #Drop all NA in the columns used to model
+```
+
+We have to convert all categorical variables to factors so that the linear model can correctly treat them as categorical predictors and generate the appropriate variables for the analysis.
+
+```{r}
+mdr_wide <- mdr_wide |>
+  mutate(
+    Gender = factor(Gender),
+    Species = factor(Species),
+    Diabetes = factor(Diabetes),
+    Hypertension = factor(Hypertension),
+    Hospital_before = factor(Hospital_before),
+    Infection_Freq = factor(Infection_Freq)
+  )
+```
+
+This is a dataframe in wide format with the variable *MDR*, including the resistance pattern using sparse encoding and ready for linear modelling and PCA.
+
+## Add Age Group Variable
+
+```{r}
+breaks <- seq(0, 90, 10)
+labels <- paste0("[", head(breaks, -1), ",", tail(breaks, -1), "]")
+
+mdr_wide <- mdr_wide |> 
+  mutate(age_group = cut(
+         x = Age,
+         breaks = breaks,
+             right = FALSE,
+    include.lowest = TRUE,
+    labels = labels))
+```
+
+```{r}
+write.csv(mdr_wide, here("data/03_dat_aug_wide.csv"), row.names = FALSE)
+```
+
+# 04_describe
+
+# Description of the Dataset
+
+## Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+library("table1")
+library("patchwork")
+library("htmltools")
+```
+
+## Load Data
+
+```{r}
+mdr_data <- read.csv(here("data/02_dat_clean.csv"))
+mdr_long <- read.csv(here("data/03_dat_aug_long.csv"))
+mdr_wide <- read.csv(here("data/03_dat_aug_wide.csv"))
+```
+
+## Load Functions
+
+```{r}
+source(here("R/99_proj_func.R"))
+```
+
+## Data Inspection
+
+```{r}
+# Number of rows & columns
+dim(mdr_data)
+```
+
+```{r}
+mdr_data |> sample_n(10)
+```
+
+## Data Table
+
+```{r}
+# Table describing the data per species
+t1 <- table1(
+  ~ Age + Gender  + Diabetes + Hypertension + Hospital_before +
+    Infection_Freq +
+    AMX.AMP + AMC + CZ + FOX + CTX.CRO + IPM + GEN + AN +
+    Acide.nalidixique + ofx + CIP + C + Co.trimoxazole +
+    Furanes + colistine
+  | Species,
+  data = mdr_data
+)
+
+html_table <- as.tags(t1) 
+save_html(html_table, file = here("results/images/04_table_1.html"))
+
+
+# Wrap table in div to shrink
+html_table_resized <- tags$div(
+  style = "overflow-x:auto; max-width:100%; zoom:0.7;",
+  as.tags(t1)
+)
+
+# Save HTML to results/images in project
+save_html(html_table_resized, file = here("results/images/04_table_1_resized.html"))
+
+```
+
+## Table Describing Antibiotic Full Names & Class
+
+```{r}
+mdr_long |> 
+  distinct(Antibiotic, Full_Name, Class)
+```
+
+## Visualisation of Variable Distributions
+
+**Age and Gender**
+
+```{r}
+#| warning: false
+ 
+p1  <- mdr_wide |> 
+  ggplot(data = _, 
+              aes(x = age_group, fill = Gender)) +
+  geom_bar(stat = "count", color = "black") + 
+  scale_y_continuous(breaks = seq(0, 2000, 250)) +
+  labs( x = "Age", 
+        y = "Count",
+        title = "Age Distribution by Gender") +
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12),
+        axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size = 16))
+
+# save_png is a function in 99_proj_func.R
+save_png(
+  plot     = p1,
+  filename = here("results/images/04_Age_Gender.png")
+)
+```
+
+**Species**
+
+```{r}
+#| warning: false
+
+p2 <- mdr_data |> 
+  ggplot(data = _, 
+         aes(x = Species, fill = Species)) + 
+  geom_bar(color = "black") +
+    geom_text(stat = "count",
+    aes(label = ..count..),
+    vjust = -0.2,        # raise text above bars
+    size = 3.2
+  ) +
+  scale_y_continuous(breaks = seq(0, 6000, 1000)) +
+  labs( x = "Species", 
+        y = "Count",
+        title = "Species Distribution") +
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12),
+        axis.title.x = element_text(size = 15),
+        axis.title.y = element_text(size = 15),
+        legend.position = "none")
+
+save_png(
+  plot     = p2,
+  filename = here("results/images/04_Species.png")
+)
+```
+
+**Age Distribution per Species**
+
+```{r}
+p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
+  geom_boxplot(color = "black") +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  labs(title = "Age Distribution by Species",
+       x = "Species",
+       y = "Age") +
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none")
+
+save_png(
+  plot     = p3,
+  filename = here("results/images/04_Age_Species.png")
+)
+```
+
+**Hypertension, Diabetes, Hospital before, Infection Freq**
+
+```{r}
+#| warning: false
+#| message: false
+
+# plot_bar is a function in 99_proj_func.R
+p4 <- plot_bar(mdr_data, Diabetes, "Diabetes")
+p5 <- plot_bar(mdr_data, Hypertension, "Hypertension")
+p6 <- plot_bar(mdr_data, Hospital_before, "Hospital Before")
+p7 <- plot_bar(
+        mdr_data |> mutate(Infection_Freq = factor(Infection_Freq, levels = c(0,1,2,3))),
+        Infection_Freq,
+        "Infection Freq"
+      )
+
+p8 <- (p4 + p5) / (p6 + p7)
+
+save_png(
+  plot     = p8,
+  filename = here("results/images/04_Characteristics.png")
+)
+```
+
+**Antibiotic Resistance Profiles**
+
+```{r}
+# Convert resistance to a factor 
+mdr_long$Resistance <- factor(mdr_long$Resistance,
+                              levels = c("S","I","R"))
+
+p9 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
+  geom_bar(position = "fill", color = "black") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Resistance Profile by Antibiotic",
+    x = "Antibiotic",
+    y = "Percent"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 18),
+    axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14)
+  )
+
+save_png(
+  plot     = p9,
+  filename = here("results/images/04_Resistance_Profile.png")
+)
+```
+
+# 05_linear_model_MDR
+
+# Multidrug Resistance Linear Model
+
+The objective of this analysis is to model, using linear models, the number of antibiotic resistances that an infection will present based on different individual and clinical characteristics, thereby allowing us to draw conclusions about which of these factors have the greatest impact on the development of antibiotic multiresistance.
+
+## Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+library("broom")
+library("ggrepel")
+```
+
+## Load Data
+
+```{r}
+MDR_df <- read.csv(here("data/03_dat_aug_wide.csv"))
+```
+
+## MDR variable
+
+To do the analysis we construct in 03_augment.qmd the MDR variable assigning a numerical score to the resistance profile of each isolate. For every antibiotic tested, we added **1 point** if the isolate was classified as *Resistant (R)* and **0.5 points** if it was classified as *Intermediate (I)*, while *Susceptible (S)* contributed **0 points**. By summing these values across all antibiotics for each sample, we obtained a continuous MDR score that reflects the degree of multidrug resistance.
+
+## Linear Model
+
+The linear model estimates how each clinical and bacterial variable affects MDR. Because categorical predictors use dummy coding, the intercept represents the expected MDR for the **reference categories**: *Acinetobacter baumanni,* female gender, no diabetes, no hypertension, no prior hospitalization and Infection_Freq = 0. All other coefficients indicate how MDR changes relative to these reference groups.
+
+```{r}
+linear_model <- MDR_df |> 
+  lm(formula = MDR ~ Age + Gender + Species + Diabetes + Hypertension + Hospital_before + Infection_Freq,
+     data = _)
+
+tidy_lm <- tidy(linear_model, 
+     conf.int = TRUE,
+     conf.level = 0.95) |> 
+  mutate(term = str_replace(term, "Species", "")) |> 
+  mutate(term = str_replace(term, "Yes", "")) |> 
+  mutate(term = str_replace(term, "GenderM", "Gender_M")) |> 
+  mutate(term = str_replace(term, "Freq1", "Freq_1")) |>
+  mutate(term = str_replace(term, "Freq2", "Freq_2")) |>
+  mutate(term = str_replace(term, "Freq3", "Freq_3")) |> 
+  mutate(sig = factor(p.value < 0.05))
+  
+
+tidy_lm
+```
+
+## Visualization
+
+### Forest plot
+
+```{r}
+forest_plot <- tidy_lm |>
+  filter(term != "(Intercept)") |>
+  mutate(term = fct_reorder(term, estimate)) |>
+  ggplot(aes(y = term, x = estimate)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, color = sig), height = 0.2) +
+  geom_point() +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Estimates (95% CIs)",
+       y = "",
+       color = "p-value < 0.05") +
+  theme_minimal()
+
+forest_plot
+```
+
+The linear model shows that bacterial species are the main drivers of MDR, indicating that certain pathogens are more prone to acquiring multiple antibiotic resistances, with *Klebsiella pneumoniae* and *Escherichia coli* displaying significantly higher MDR levels. In contrast, patient-related variables such as age, diabetes, and hypertension show no meaningful association with MDR. This lack of influence from physiological factors is intuitive, whereas prior hospitalization might have been expected to correlate with higher MDR due to potential exposure to nosocomial pathogens, however, our data do not support this relationship.
+
+```{r}
+ggsave(here("results/images/05_MDR_forest.png"), forest_plot)
+```
+
+### Volcano plot
+
+```{r}
+volcano_plot <- tidy_lm |> 
+  filter(term != "(Intercept)") |>
+  mutate(logpval = -log10(p.value)) |> 
+  ggplot(mapping = aes(y = logpval, x = estimate, color = sig, label = term)) +
+  geom_point() +
+  geom_text_repel(max.overlaps = 12, size = 3) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey40") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dotted", color = "grey40") +
+  labs(x = "Estimates",
+       y = "-log10(p-value)",
+       color = "p-value < 0.05") +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 10),
+    axis.title.y = element_text(face = "bold", size = 10)
+  ) 
+
+volcano_plot  
+```
+
+```{r}
+ggsave(here("results/images/05_MDR_volcano.png"), volcano_plot)
+```
+
+# 06_linear_model_inf_freq
+
+### Load libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse") 
+library("dplyr")
+library("here")
+library("broom")
+library("ggrepel")
+```
+
+### Load data
+
+```{r}
+
+infect_db <- read_csv(here("data/03_dat_aug_wide.csv"),
+                      show_col_types = FALSE)
+```
+
+#### First model: Is infection frequency correlated to patient details?
+
+```{r}
+model1 <- infect_db |> 
+  lm(Infection_Freq ~ Age + Diabetes + Hypertension + Hospital_before,
+  data = _
+)
+summary(model1)
+```
+
+#### Second model: Is infection frequency correlated with the species?
+
+```{r}
+model2 <- infect_db |> 
+  lm(Infection_Freq ~ Species,
+  data = _
+)
+summary(model2)
+```
+
+#### Third model: Is infection frequency correlated with multiple drug resistance?
+
+```{r}
+model3 <- infect_db |> 
+  lm(Infection_Freq ~ MDR,
+  data = _
+)
+summary(model3)
+```
+
+#### 
+
+```{r}
+model_full <- infect_db |> 
+  lm(Infection_Freq ~ Species + MDR + Age + Gender + 
+       Diabetes + Hypertension + Hospital_before,
+  data = _
+)
+summary(model_full)
+```
+
+```{r}
+tidy_lm <- tidy(model_full, 
+     conf.int = TRUE,
+     conf.level = 0.95) |> 
+  mutate(term = str_replace(term, "Species", "")) |> 
+  mutate(term = str_replace(term, "Yes", "")) |> 
+  mutate(term = str_replace(term, "GenderM", "Gender_M")) |> 
+  mutate(term = str_replace(term, "Freq1", "Freq_1")) |>
+  mutate(term = str_replace(term, "Freq2", "Freq_2")) |>
+  mutate(term = str_replace(term, "Freq3", "Freq_3")) |> 
+  mutate(sig = factor(p.value < 0.05))
+  
+
+tidy_lm
+```
+
+```{r}
+infect_plot1 <- tidy_lm |>
+  filter(term != "(Intercept)") |>
+  mutate(term = fct_reorder(term, estimate)) |>
+  ggplot(aes(y = term, x = estimate)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0.2) +
+  geom_point() +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Estimates (95% CIs)",
+       y = "",
+       title = "Factors associated with infection frequency") +
+  theme_minimal()
+
+ggsave(filename = "06_inf_freq_forest.png", plot = infect_plot1, path = here("results/images"), dpi = 300)
+infect_plot1
+```
+
+```{r}
+tidy_lm <- tidy_lm |> 
+  mutate(q.value = p.adjust(p.value),
+         is_significant = case_when(q.value <= 0.05 ~ "yes",
+                                    q.value > 0.05 ~ "no"))
+```
+
+```{r}
+pl <- tidy_lm |>
+  filter(term != "(Intercept)") |>
+  ggplot(aes(x = estimate,
+             y = -log10(p.value),
+             colour = sig,
+             label = term)) +
+  geom_point(size = 1,
+             alpha = 0.5) +
+  geom_text_repel(size = 2.5,
+                  max.overlaps = 20) +
+  geom_hline(yintercept = -log10(0.05), linetype = "dotted") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  theme_minimal(base_size = 16) +
+  theme(
+    plot.title = element_text(hjust = 1),
+    plot.subtitle = element_text(hjust = 1),
+    legend.position = "none") +
+    labs(
+    x = "Estimates",
+    y = "-log10(p)",
+    title = "Factors associated with infection frequency",
+    subtitle = "Factors highlighted in turquoise are significant")
+
+ggsave(filename = "06_inf_freq_volcano.png", plot = pl, path = here("results/images"), dpi = 300)
+pl
+```
+
+# 07_heatmap
+
+## HeatMap
+
+This analysis visualizes the resistance patterns of different bacterial species to various antibiotics using a heatmap. The raw dataset, which includes species, antibiotics, and resistance results (`R`, `S`, or `I`), was first transformed to create a binary `resistant` variable indicating whether a bacterium is resistant (`R`) or not. The data was then grouped by species and antibiotic to calculate the number of resistant and non-resistant cases, from which the frequency of resistance for each species-antibiotic pair was computed. The resulting heatmap uses a color gradient from blue (low resistance) through white (intermediate) to red (high resistance) to illustrate the proportion of resistant isolates, allowing for rapid identification of patterns in bacterial susceptibility. Additional analyses highlight which species exhibit the highest levels of resistance, sensitivity, or intermediate responses, providing insights into potential treatment challenges.
+
+## Running Code
+
+```{r}
+library("tidyverse")
+library("here")
+
+data_long <- read.csv(here("data/03_dat_aug_long.csv"))
+
+```
+
+```{r}
+#look at first few rows
+head(data_long)
+colnames(data_long)
+```
+
+### checking how many bacterias/species are there:
+
+```{r}
+data_long |>
+  count(Species) 
+```
+
+### how many antibiotics
+
+```{r}
+data_long |>
+  count(Antibiotic) 
+```
+
+### fixing the data
+
+resistant - means if the results are R - e.g., True or False
+
+and in the group_by- I calculate by each species by each antibiotic by each resistant. - how many true false are there in each group
+
+then calculate the frequency
+
+#### it is for each species!!!
+
+```{r}
+#calculating the frequency for all of the bacterias: result = R
+resistant_data <- data_long |>
+  mutate(resistant = Resistance == "R") |>
+  group_by(Species, Antibiotic, resistant) |>
+  summarise(n = n(), .groups = "drop_last") |>  # keep Species + Antibiotic grouping
+  mutate(freq = n / sum(n))
+
+resistant_data
+```
+
+### plotting the Heatmap
+
+showing the Resistance of the bacteria to antibiotics.
+
+it is calculate by each bacteria.
+
+```{r}
+heatmap_plot <- ggplot(resistant_data, aes(x = Antibiotic, y = Species, fill = freq)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0.50) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 15),
+    axis.text.y = element_text(size = 15),
+    axis.title = element_text(face = "bold", size = 17),
+    plot.title = element_text(face = "bold", size = 20)
+  ) +
+  labs(title = "Resistance of the Bacteria to the Antibiotics", fill = "Frequency")
+
+# Save the plot as PNG
+ggsave(here("results/images/07_heatmap.png"), plot = heatmap_plot, width = 13, height = 10, dpi = 300)
+
+heatmap_plot
+```
+
+R = Resistant: The bacteria does NOT respond to the antibiotic. The drug will likely not work.
+
+S = Sensitive/Susceptible: The bacteria is killed by the antibiotic. The drug will work.
+
+I = Intermediate: The bacteria is in-between, maybe the drug works at high dose, maybe not.
+
+#### In the **Result column -** find how many S,R and I we have
+
+```{r}
+# Count overall R/S/I
+data_long |>
+  count(Resistance)
+```
+
+```{r}
+# Count R/S/I per species
+data_long |>
+  count(Species, Resistance)
+```
+
+### which species has the most R
+
+Escherichia coli
+
+```{r}
+data_long |>
+  filter(Resistance == "R") |>
+  group_by(Species) |>
+  summarise(count_R = n()) |> 
+  arrange(desc(count_R)) 
+```
+
+### which Species has the most S
+
+Escherichia coli
+
+```{r}
+data_long |>
+  filter(Resistance == "S") |>
+  group_by(Species) |>
+  summarise(count_S = n()) |> 
+  arrange(desc(count_S)) 
+```
+
+### which Species has the most I
+
+Escherichia coli
+
+```{r}
+data_long |>
+  filter(Resistance == "I") |>
+  group_by(Species) |>
+  summarise(count_I = n()) |> 
+  arrange(desc(count_I)) 
+```
+
+-   Frequency of infections per patient.
+
+-   Encoded categories:
+
+    -   `0` → Never
+
+    -   `1` → Rarely
+
+    -   `2` → Regularly
+
+    -   `3` → Often
+
+-   Includes anomalies such as `"unknown"`, `"error"`, `"missing"`.
+
+    ### 
+
+# 08_PCA
+
+# **PCA of Antibiotic Resistance Patterns Across Different Species**
+
+To explore shared patterns of antibiotic resistance across bacterial species, we performed a Principal Component Analysis (PCA) on the numeric resistance profiles. This approach reveals the main axes of variation in multi-drug resistance and allows us to visualize whether species cluster according to their resistance signatures.
+
+## Load Libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+library("tidyverse")
+library("here")
+library("broom")
+```
+
+## Load Data
+
+```{r}
+MDR_df <- read.csv(here("data/03_dat_aug_wide.csv"))
+```
+
+## Convert Resistance Categories to Numeric
+
+In 03_augment.qmd we transform the categorical resistance values (R, I, S) into numeric scores (1, 0.5, 0), allowing us to quantitatively analyze resistance patterns across samples.
+
+## Run Initial PCA
+
+We perform a PCA using only the antibiotic-resistance columns, scaling the variables to unit variance to ensure equal contribution across antibiotics.
+
+```{r}
+antibiotics_cols <- colnames(MDR_df)[c(8:(ncol(MDR_df)-1))]
+
+pca_fit <- MDR_df |>
+  select(all_of(antibiotics_cols)) |> 
+  prcomp(scale = TRUE)
+```
+
+```{r}
+pca_all_plot <- pca_fit |> 
+  augment(MDR_df) |> 
+  ggplot(mapping = aes(x = .fittedPC1,
+                       y = .fittedPC2,
+                       color = Species)) +
+  geom_point(alpha = 0.2) +
+  labs(x = "PC1",
+       y = "PC2")
+
+pca_all_plot
+```
+
+As seen in the initial PCA plot, the structure of the data is dominated by the large number of *E. coli* isolates, making it difficult to observe patterns from other species. This imbalance can also bias the interpretation of the principal components, since one species disproportionately drives the variance. To avoid this dominance and obtain a clearer, more balanced view of resistance patterns, we downsample each species to the same number of isolates.
+
+```{r}
+ggsave(here("results/images/08_PCA_all.png"), pca_all_plot)
+```
+
+## Create Balanced Dataset
+
+We calculate the minimum number of isolates per species to determine the target size for constructing a balanced dataset. We downsample each species to the same number of isolates, preventing highly abundant species from dominating the PCA structure.
+
+```{r}
+min_n <- MDR_df |>
+  count(Species) |> 
+  summarise(min(n)) |> 
+  pull()
+
+balanced_df <- MDR_df |>
+  group_by(Species) |>
+  slice_sample(n = min_n) |>
+  ungroup()
+
+balanced_df |> 
+  count(Species)
+```
+
+## Run PCA on Balanced Dataset
+
+We repeat the PCA on the balanced dataset.
+
+```{r}
+pca_fit_balanced <- balanced_df |>
+  select(all_of(antibiotics_cols)) |> 
+  prcomp(scale = TRUE)
+```
+
+```{r}
+pca_downsampling_plot <- pca_fit_balanced |> 
+  augment(balanced_df) |> 
+  ggplot(mapping = aes(x = .fittedPC1,
+                       y = .fittedPC2,
+                       color = Species)) +
+  geom_point() +
+  labs(x = "PC1",
+       y = "PC2")
+
+pca_downsampling_plot
+```
+
+The PCA of the balanced dataset shows that most species exhibit substantial overlap in their resistance profiles, indicating that many antibiotic-resistance patterns are shared across taxa. However, some species occupy more distinct regions of the PCA space. For instance, *Pseudomonas aeruginosa* and *Serratia marcescens* are positioned predominantly toward the right side of the plot, forming more defined clusters that show limited overlap with the left cloud dominated by *Escherichia coli*. This separation suggests that these species follow characteristic combinations of resistance traits that differ from the broader and more heterogeneous profiles observed in *E. coli* and other Enterobacterales. Overall, while many species share common multidrug-resistance patterns, a subset displays more distinct resistance signatures that set them apart from the main continuum.
+
+```{r}
+ggsave(here("results/images/08_PCA_downsampling.png"), pca_downsampling_plot)
+```

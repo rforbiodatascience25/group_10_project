@@ -24,7 +24,7 @@ library("ggrepel")
 
 ```{r}
 
-infect_db <- read_csv(here("data/aug_wide_bacteria_data.csv"),
+infect_db <- read_csv(here("data/03_dat_aug_wide.csv"),
                       show_col_types = FALSE)
 ```
 
@@ -86,6 +86,8 @@ tidy_lm
 ```
 
 ```{r}
+#| warning: false
+#| message: false
 infect_plot1 <- tidy_lm |>
   filter(term != "(Intercept)") |>
   mutate(term = fct_reorder(term, estimate)) |>
@@ -98,7 +100,7 @@ infect_plot1 <- tidy_lm |>
        title = "Factors associated with infection frequency") +
   theme_minimal()
 
-ggsave(filename = "infect_plot1.png", plot = infect_plot1, path = here("results/images"), dpi = 300)
+ggsave(filename = "06_inf_freq_forest.png", plot = infect_plot1, path = here("results/images"), dpi = 300)
 infect_plot1
 ```
 
@@ -110,6 +112,8 @@ tidy_lm <- tidy_lm |>
 ```
 
 ```{r}
+#| warning: false
+#| message: false
 pl <- tidy_lm |>
   filter(term != "(Intercept)") |>
   ggplot(aes(x = estimate,
@@ -133,6 +137,6 @@ pl <- tidy_lm |>
     title = "Factors associated with infection frequency",
     subtitle = "Factors highlighted in turquoise are significant")
 
-ggsave(filename = "infect_volcano.png", plot = pl, path = here("results/images"), dpi = 300)
+ggsave(filename = "06_inf_freq_volcano.png", plot = pl, path = here("results/images"), dpi = 300)
 pl
 ```

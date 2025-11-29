@@ -15,19 +15,19 @@ editor: visual
 #| warning: false
 #| message: false
 
-library(tidyverse)
-library(here)
-library(table1)
-library(patchwork)
-library(htmltools)
+library("tidyverse")
+library("here")
+library("table1")
+library("patchwork")
+library("htmltools")
 ```
 
 ## Load Data
 
 ```{r}
-mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
-mdr_long <- read.csv(here("data/aug_long_bacteria_data.csv"))
-mdr_wide <- read.csv(here("data/aug_wide_bacteria_data.csv"))
+mdr_data <- read.csv(here("data/02_dat_clean.csv"))
+mdr_long <- read.csv(here("data/03_dat_aug_long.csv"))
+mdr_wide <- read.csv(here("data/03_dat_aug_wide.csv"))
 ```
 
 ## Load Functions
@@ -62,8 +62,9 @@ t1 <- table1(
 )
 
 html_table <- as.tags(t1) 
-save_html(html_table, file = here("results/images/table1.html"))
+save_html(html_table, file = here("results/images/04_table_1.html"))
 
+html_table
 
 # Wrap table in div to shrink
 html_table_resized <- tags$div(
@@ -71,8 +72,10 @@ html_table_resized <- tags$div(
   as.tags(t1)
 )
 
+html_table_resized
+
 # Save HTML to results/images in project
-save_html(html_table_resized, file = here("results/images/table1_resized.html"))
+save_html(html_table_resized, file = here("results/images/04_table_1_resized.html"))
 
 ```
 
@@ -103,6 +106,8 @@ p1  <- mdr_wide |>
         axis.text.y = element_text(size = 12),
         axis.title.x = element_text(size = 16),
         axis.title.y = element_text(size = 16))
+
+p1
 
 # save_png is a function in 99_proj_func.R
 save_png(
@@ -136,6 +141,8 @@ p2 <- mdr_data |>
         axis.title.y = element_text(size = 15),
         legend.position = "none")
 
+p2
+
 save_png(
   plot     = p2,
   filename = here("results/images/04_Species.png")
@@ -156,6 +163,8 @@ p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 14),
         legend.position = "none")
+
+p3
 
 save_png(
   plot     = p3,
@@ -180,6 +189,8 @@ p7 <- plot_bar(
       )
 
 p8 <- (p4 + p5) / (p6 + p7)
+
+p8
 
 save_png(
   plot     = p8,
@@ -207,6 +218,8 @@ p9 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
     axis.title.x = element_text(size = 14),
     axis.title.y = element_text(size = 14)
   )
+
+p9
 
 save_png(
   plot     = p9,

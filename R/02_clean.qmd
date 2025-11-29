@@ -13,8 +13,9 @@ editor: visual
 #| warning: false
 #| message: false
 
-library(tidyverse)
-library(here)
+library("tidyverse")
+library("here")
+library("quarto")
 ```
 
 ## Load Functions
@@ -72,8 +73,6 @@ mdr_data <- mdr_data |>
 #get_unique_counts is a function in 99_proj_func.R
 res <- map(colnames(mdr_data), 
            ~ get_unique_counts(mdr_data, .x))
-
-res
 ```
 
 **Rename accordingly**
@@ -108,5 +107,5 @@ mdr_data <- mdr_data |>
 **Save the cleaned data**
 
 ```{r}
-write.csv(mdr_data, here("data/cleaned_bacteria_data.csv"), row.names = FALSE)
+write.csv(mdr_data, here("data/02_dat_clean.csv"), row.names = FALSE)
 ```

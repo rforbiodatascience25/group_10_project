@@ -19,9 +19,9 @@ Data for this project comes from: <https://www.kaggle.com/datasets/adilimadeddin
 #| warning: false
 #| message: false
 
-library(tidyverse)
-library(here)
-library(RKaggle)
+library("tidyverse")
+library("here")
+library("RKaggle")
 ```
 
 ### Create Data Folder
