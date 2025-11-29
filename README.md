@@ -149,3 +149,12 @@ Outputs:
 PCA of all isolates (08_PCA_all.png)
 
 PCA of downsampled balanced dataset (08_PCA_downsampling.png)
+
+
+## Notes
+
+All scripts are written in R and use tidyverse conventions.
+
+Functions like fix_resistance(), count_resistance(), and plot_bar() are defined in R/99_proj_func.R.
+
+Continuous MDR score allows quantitative analysis of multidrug resistance across species and patients.
