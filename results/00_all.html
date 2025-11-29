@@ -471,39 +471,39 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mdr_data <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Age Gender                 Species Diabetes Hypertension Hospital_before
-1   88      F        Citrobacter spp.       No          Yes             Yes
-2   48      F        Escherichia coli      Yes          Yes              No
-3   19      F        Escherichia coli       No          Yes              No
-4   87      F        Escherichia coli       No           No              No
-5   38      F Acinetobacter baumannii       No          Yes              No
-6   39      F        Escherichia coli       No          Yes             Yes
-7   42      F        Escherichia coli       No           No              No
-8   86      M        Escherichia coli       No           No             Yes
-9   63      F        Escherichia coli      Yes           No              No
-10  42      F        Escherichia coli      Yes          Yes              No
+<pre><code>   Age Gender                Species Diabetes Hypertension Hospital_before
+1   77      F    Enterobacteria spp.       No           No              No
+2    2      M       Escherichia coli       No           No             Yes
+3   49      F       Escherichia coli       No           No              No
+4    3      F       Citrobacter spp.      Yes           No             Yes
+5   14      F  Klebsiella pneumoniae       No           No              No
+6   35      M    Enterobacteria spp.       No           No             Yes
+7   59      M       Escherichia coli       No           No              No
+8   29      F       Escherichia coli       No           No             Yes
+9   19      M Pseudomonas aeruginosa      Yes          Yes             Yes
+10  33      F      Proteus mirabilis       No           No              No
    Infection_Freq AMX.AMP AMC CZ FOX CTX.CRO IPM GEN AN Acide.nalidixique ofx
-1               1       S   S  S   S       S   R   S  S                 S   S
-2              NA       S   R  S   R       R   R   S  S                 S   R
-3               2       R   R  R   R       R   R   S  S                 S   S
-4               2       R   S  R   R       R   S   S  S                 S   S
-5               3       S   S  R   S       S   S   S  S                 S   S
-6               3       S   S  R   R       S   S   S  S                 S   S
-7               0       S   R  S   S       S   S   S  R                 S   R
-8               1       S   S  R   S       R   S   R  R                 R   S
-9               2       R   S  R   S       S   S   S  S                 S   S
-10              2       S   R  R   R       R   R   S  S                 S   S
+1               2       R   R  S   S       R   R   R  S                 S   S
+2               3       R   S  S   R       R   R   S  S                 R   S
+3               1       R   S  R   R       R   R   S  S                 S   R
+4               3       S   R  S   R       S   R   S  S                 S   S
+5               2       S   S  I   I       I   S   I  I                 S   S
+6               0       R   R  S   R       S   R   S  S                 S   S
+7               0       R   R  R   R       R   S   R  S                 R   S
+8               2       S   S  S   R       R   R   S  S                 S   S
+9               1       S   S  S   S       S   S   S  S                 S   S
+10              3       R   S  S   S       S   S   S  S                 S   S
    CIP C Co.trimoxazole Furanes colistine
 1    S S              S       S         S
-2    S S              S       S         S
-3    S S              S       R         S
-4    R S              S       S         S
-5    S S              S       S         S
-6    S R              S       S         S
-7    S S              S       R         S
-8    R S              S       S         R
+2    R S              R       S         S
+3    R S              S       S         S
+4    S S              S       S         S
+5    R I              I       I         R
+6    S S              S       S         R
+7    R S              S       S         R
+8    S S              R       R         S
 9    S S              S       S         S
-10   S S              S       S         R</code></pre>
+10   S S              S       S         S</code></pre>
 </div>
 </div>
 </section>
@@ -2079,8 +2079,8 @@ F-statistic: 0.2747 on 1 and 9712 DF,  p-value: 0.6002</code></pre>
 </div>
 </div>
 </section>
-<section id="section" class="level4">
-<h4 class="anchored" data-anchor-id="section"></h4>
+<section id="fourth-model-which-is-the-main-contributor-for-infection-frequency" class="level4">
+<h4 class="anchored" data-anchor-id="fourth-model-which-is-the-main-contributor-for-infection-frequency">Fourth model: Which is the main contributor for infection frequency?</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>model_full <span class="ot">&lt;-</span> infect_db <span class="sc">|&gt;</span> </span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(Infection_Freq <span class="sc">~</span> Species <span class="sc">+</span> MDR <span class="sc">+</span> Age <span class="sc">+</span> Gender <span class="sc">+</span> </span>
@@ -2158,6 +2158,12 @@ F-statistic: 1.536 on 14 and 9699 DF,  p-value: 0.08977</code></pre>
 15 Hospital_befo… -1.95e-2  0.0227      -0.857 3.92e- 1 -6.40e-2   0.0251  FALSE</code></pre>
 </div>
 </div>
+</section>
+<section id="visualization-1" class="level4">
+<h4 class="anchored" data-anchor-id="visualization-1">Visualization</h4>
+</section>
+<section id="forest-plot-1" class="level4">
+<h4 class="anchored" data-anchor-id="forest-plot-1">Forest plot</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>infect_plot1 <span class="ot">&lt;-</span> tidy_lm <span class="sc">|&gt;</span></span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">!=</span> <span class="st">"(Intercept)"</span>) <span class="sc">|&gt;</span></span>
@@ -2194,6 +2200,9 @@ F-statistic: 1.536 on 14 and 9699 DF,  p-value: 0.08977</code></pre>
 <span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_significant =</span> <span class="fu">case_when</span>(q.value <span class="sc">&lt;=</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"yes"</span>,</span>
 <span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>                                    q.value <span class="sc">&gt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"no"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="volcano-plot-1" class="level4">
+<h4 class="anchored" data-anchor-id="volcano-plot-1">Volcano plot</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>pl <span class="ot">&lt;-</span> tidy_lm <span class="sc">|&gt;</span></span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">!=</span> <span class="st">"(Intercept)"</span>) <span class="sc">|&gt;</span></span>
@@ -2528,7 +2537,7 @@ F-statistic: 1.536 on 14 and 9699 DF,  p-value: 0.08977</code></pre>
 <li><p><code>3</code> → Often</p></li>
 </ul></li>
 <li><p>Includes anomalies such as <code>"unknown"</code>, <code>"error"</code>, <code>"missing"</code>.</p>
-<h3 id="section-1" class="anchored"></h3></li>
+<h3 id="section" class="anchored"></h3></li>
 </ul>
 </section>
 </section>
