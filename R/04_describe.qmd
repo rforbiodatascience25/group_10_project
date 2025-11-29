@@ -104,6 +104,7 @@ p1  <- mdr_wide |>
         axis.title.x = element_text(size = 16),
         axis.title.y = element_text(size = 16))
 
+# save_png is a function in 99_proj_func.R
 save_png(
   plot     = p1,
   filename = here("results/images/04_Age_Gender.png")
@@ -168,6 +169,7 @@ save_png(
 #| warning: false
 #| message: false
 
+# plot_bar is a function in 99_proj_func.R
 p4 <- plot_bar(mdr_data, Diabetes, "Diabetes")
 p5 <- plot_bar(mdr_data, Hypertension, "Hypertension")
 p6 <- plot_bar(mdr_data, Hospital_before, "Hospital Before")
