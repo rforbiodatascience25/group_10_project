@@ -190,7 +190,7 @@ mdr_data <- read.csv(here("data/02_dat_clean.csv"))
 ## Create New Table with Name and Class of Antibiotics
 
 ```{r}
-antibiotic_table <- data.frame(
+antibiotic_table <- tibble(
   Antibiotic = c(
     "AMX.AMP", "AMC", "CZ", "FOX", "CTX.CRO", "IPM",
     "GEN", "AN",
