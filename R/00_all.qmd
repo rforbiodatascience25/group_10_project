@@ -124,8 +124,6 @@ mdr_data <- mdr_data |>
 #get_unique_counts is a function in 99_proj_func.R
 res <- map(colnames(mdr_data), 
            ~ get_unique_counts(mdr_data, .x))
-
-res
 ```
 
 **Rename accordingly**
@@ -420,6 +418,8 @@ p1  <- mdr_wide |>
         axis.title.x = element_text(size = 16),
         axis.title.y = element_text(size = 16))
 
+p1
+
 # save_png is a function in 99_proj_func.R
 save_png(
   plot     = p1,
@@ -452,6 +452,8 @@ p2 <- mdr_data |>
         axis.title.y = element_text(size = 15),
         legend.position = "none")
 
+p2
+
 save_png(
   plot     = p2,
   filename = here("results/images/04_Species.png")
@@ -472,6 +474,8 @@ p3 <- ggplot(mdr_data, aes(x = Species, y = Age, fill = Species)) +
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 14),
         legend.position = "none")
+
+p3
 
 save_png(
   plot     = p3,
@@ -496,6 +500,8 @@ p7 <- plot_bar(
       )
 
 p8 <- (p4 + p5) / (p6 + p7)
+
+p8
 
 save_png(
   plot     = p8,
@@ -523,6 +529,8 @@ p9 <- ggplot(mdr_long, aes(x = Antibiotic, fill = Resistance)) +
     axis.title.x = element_text(size = 14),
     axis.title.y = element_text(size = 14)
   )
+
+p9
 
 save_png(
   plot     = p9,
