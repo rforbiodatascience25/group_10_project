@@ -49,15 +49,14 @@ Data Loading, Cleaning & Overview
 
 :::: {.column width="50%"}
 ::: fragment
-### Table 1 {style="font-size:1.0em"}
+### Table 1 {style="font-size:0.6em"}
 
-```{r results='asis'}
+```r 
 library(here)
 library(table1)
-library(htmltools)
 
 # Load Data
-mdr_data <- read.csv(here("data/02_dat_clean.csv"))
+mdr_data <- read.csv(here("data/cleaned_bacteria_data.csv"))
 
 # Create table
 t1 <- table1(
@@ -70,18 +69,7 @@ t1 <- table1(
   data = mdr_data
 )
 
-# Bigger table, smaller text
-div(
-  style = "
-    font-size: 0.45em;         /* make text smaller */
-    transform: scale(1.2);     /* make table itself bigger */
-    transform-origin: top left;
-    height: 350px;             /* vertical scroll box */
-    width: 100%;               
-    overflow: auto; 
-  ",
-  t1
-)
+t1
 
 ```
 :::
@@ -92,7 +80,7 @@ div(
 
 Data Loading, Cleaning & Overview
 
-:::::: columns
+:::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -103,25 +91,25 @@ Data Loading, Cleaning & Overview
 -   **Data Description**: `table1()` and `ggplot()`
 :::
 
-:::: {.column width="50%"}
-::: {style="
-```         
-text-align:right;
-transform: scale(1.4);
-transform-origin: top left;
-margin-left: 90px;   /* change this value */
-```
+::: {.column width="50%"}
 
-"} <img src="images/04_Age_Gender.png" width="100%"/>
+<div style="
+    text-align:right;
+    transform: scale(1.4);
+    transform-origin: top left;
+    margin-left: 90px;   /* change this value */
+">
+  <img src="images/04_Age_Gender.png" width="100%">
+</div>
+
 :::
 ::::
-::::::
 
 ## Data Processing & Description {.smaller}
 
 Data Loading, Cleaning & Overview
 
-:::::: columns
+:::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -132,19 +120,19 @@ Data Loading, Cleaning & Overview
 -   **Data Description**: `table1()` and `ggplot()`
 :::
 
-:::: {.column width="50%"}
-::: {style="
-```         
-text-align:right;
-transform: scale(1.4);
-transform-origin: top left;
-margin-left: 90px;   /* change this value */
-```
+::: {.column width="50%"}
 
-"} <img src="images/04_Species.png" width="100%"/>
+<div style="
+    text-align:right;
+    transform: scale(1.4);
+    transform-origin: top left;
+    margin-left: 90px;   /* change this value */
+">
+  <img src="images/04_Species.png" width="100%">
+</div>
+
 :::
 ::::
-::::::
 
 ## Data Augmentation {.smaller}
 
