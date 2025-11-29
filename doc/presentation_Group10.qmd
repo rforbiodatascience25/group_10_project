@@ -80,7 +80,7 @@ t1
 
 Data Loading, Cleaning & Overview
 
-:::::: columns
+::::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -91,17 +91,16 @@ Data Loading, Cleaning & Overview
 -   **Data Description**: `table1()` and `ggplot()`
 :::
 
-:::: {.column width="50%"}
+::: {.column width="50%"}
 ![](images/04_Age_Gender.png)
-
-::::
-::::::
+:::
+:::::
 
 ## Data Processing & Description {.smaller}
 
 Data Loading, Cleaning & Overview
 
-:::::: columns
+::::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -112,11 +111,10 @@ Data Loading, Cleaning & Overview
 -   **Data Description**: `table1()` and `ggplot()`
 :::
 
-:::: {.column width="50%"}
+::: {.column width="50%"}
 ![](images/04_Species.png)
-
-::::
-::::::
+:::
+:::::
 
 ## Data Augmentation {.smaller}
 
