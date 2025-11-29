@@ -13,26 +13,22 @@ editor: visual
 
 ## Data & Aims {.small}
 
-**Dataset Overview:**  
-<span style="font-size:75%;">
-A collection of bacterial isolates with associated demographics, clinical factors, and antibiotic susceptibility results.
-</span>
+**Dataset Overview:**\
+[A collection of bacterial isolates with associated patient demographics, clinical factors and antibiotic susceptibility results.]{style="font-size:75%;"}
 
-<div style="height:0.5em;"></div>
+::: {style="height:0.5em;"}
+:::
 
 ::: fragment
-**Aims:**  
-<span style="font-size:75%;">
-- Explore antibiotic resistance profiles across species  
-- Compare resistance patterns across key variables  
-- Perform PCA to identify clustering based on resistance profiles 
-</span>
+**Aims:**\
+[- Determine which clinical or individual variables significantly influence the number of resistances in an infection using linear models\
+- Explore antibiotic resistance profiles across species using visualisation techniques such as heatmaps\
+- Perform PCA to identify clustering based on resistance profiles]{style="font-size:75%;"}
 
 <br>
 
 [**Data:** https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data]{style="font-size: 60%;"}
 :::
-
 
 ## Data Processing & Description {.smaller}
 
@@ -96,7 +92,7 @@ div(
 
 Data Loading, Cleaning & Overview
 
-:::: columns
+::::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -108,24 +104,15 @@ Data Loading, Cleaning & Overview
 :::
 
 ::: {.column width="50%"}
-
-<div style="
-    text-align:right;
-    transform: scale(1.4);
-    transform-origin: top left;
-    margin-left: 90px;   /* change this value */
-">
-  <img src="images/04_Age_Gender.png" width="100%">
-</div>
-
+![](images/04_Age_Gender.png){style="\"width:100%"}
 :::
-::::
+:::::
 
 ## Data Processing & Description {.smaller}
 
 Data Loading, Cleaning & Overview
 
-:::: columns
+::::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -137,27 +124,58 @@ Data Loading, Cleaning & Overview
 :::
 
 ::: {.column width="50%"}
+![](images/04_Species.png){style="\"width:100%"}
+:::
+:::::
 
-<div style="
-    text-align:right;
-    transform: scale(1.4);
-    transform-origin: top left;
-    margin-left: 90px;   /* change this value */
-">
-  <img src="images/04_Species.png" width="100%">
-</div>
+## Data Augmentation {.smaller}
 
+New data frame in long format, and creation and modification of variables for the downstream analyses.
+
+:::::: columns
+:::: {.column width="50%"}
+### [Workflow]{style="font-size:0.6em"}
+
+::: incremental
+-   **`data.frame()`**: Creates a lookup table linking antibiotic codes with their full names and pharmacological classes
+-   **`pivot_longer()` + `left_join()`**: Reshapes the dataset and merges antibiotic information
+-   **MDR variable**: Converts R=1, I=0.5, S=0 across antibiotics and sums the values to obtain a resistance score
+-   **Age-group variable**: Bins ages into 10-year categorical intervals
 :::
 ::::
 
-## Data Augment
+::: {.column width="50%"}
+### [Code]{style="font-size:0.6em"}
 
--   Loaded cleaned bacteria dataset
--   Added antibiotic names and classes
--   Reshaped to long format and joined tables
--   Created MDR score (R = 1, I = 0.5, S = 0)
--   Converted variables to factors and added age groups
--   Final outputs: aug_long_bacteria_data.csv and aug_wide_bacteria_data.csv {.incremental}
+``` r
+#MDR variable
+antibiotics_cols <- colnames(mdr_data)[c(8:ncol(mdr_data))]
+
+#Apply the case_when function to mutate every antibiotic column and sum into MDR variable
+#Count resistance is a function in 99_proj_func.R
+mdr_wide <- mdr_data |>
+  mutate(
+    across(antibiotics_cols, 
+           count_resistance)) |> 
+  mutate(MDR = rowSums(across(antibiotics_cols))) |> 
+  drop_na(Age, Gender, Species, Diabetes, Hypertension, Hospital_before, Infection_Freq, MDR)   #Drop all NA in the columns used to model
+     
+     ...
+
+#Age-group variable
+breaks <- seq(0, 90, 10)
+labels <- paste0("[", head(breaks, -1), ",", tail(breaks, -1), "]")
+
+mdr_wide <- mdr_wide |> 
+  mutate(age_group = cut(
+         x = Age,
+         breaks = breaks,
+             right = FALSE,
+    include.lowest = TRUE,
+    labels = labels))
+```
+:::
+::::::
 
 ## Linear Model MDR {.smaller}
 
@@ -168,10 +186,10 @@ Analysis of how `age`, `gender`, `bacterial species`, `diabetes`, `hypertension`
 ### [Workflow]{style="font-size:0.6em"}
 
 ::: incremental
--   **`lm()`**: fits the linear model predicting MDR
--   **`broom::tidy()`**: extracts coefficients, confidence intervals, and p-values
--   **`mutate()`**: cleans variable names and adds significance flag
--   **`stringr::str_replace()`**: standardises variable labels
+-   **`lm()`**: Fits the linear model predicting MDR
+-   **`broom::tidy()`**: Extracts coefficients, confidence intervals, and p-values
+-   **`mutate()`**: Cleans variable names and adds significance flag
+-   **`stringr::str_replace()`**: Standardises variable labels
 :::
 ::::
 
@@ -253,11 +271,11 @@ Identify shared patterns of antibiotic resistance across bacterial species.
 ### [Workflow]{style="font-size:0.6em"}
 
 ::: incremental
--   **`select()`**: extracts only the antibiotic-resistance columns used for PCA
--   **`prcomp()`**: performs the PCA with variable scaling
--   **`augment()`**: attaches PCA scores (PC1, PC2…) back to the original dataset
--   **`count()`** — determines number of isolates per species
--   **`slice_sample()`**: downsamples species to equal sizes for balanced PCA
+-   **`select()`**: Extracts only the antibiotic-resistance columns used for PCA
+-   **`prcomp()`**: Performs the PCA with variable scaling
+-   **`augment()`**: Attaches PCA scores (PC1, PC2…) back to the original dataset
+-   **`count()`** — Determines number of isolates per species
+-   **`slice_sample()`**: Downsamples species to equal sizes for balanced PCA
 :::
 ::::
 
