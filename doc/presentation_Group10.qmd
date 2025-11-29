@@ -155,7 +155,7 @@ New data frame in long format, and creation and modification of variables for th
 ### [Workflow]{style="font-size:0.6em"}
 
 ::: incremental
--   **`data.frame()`**: Creates a lookup table linking antibiotic codes with their full names and pharmacological classes
+-   **`tibble()`**: Creates a lookup table linking antibiotic codes with their full names and pharmacological classes
 -   **`pivot_longer()` + `left_join()`**: Reshapes the dataset and merges antibiotic information
 -   **MDR variable**: Converts R=1, I=0.5, S=0 across antibiotics and sums the values to obtain a resistance score
 -   **Age-group variable**: Bins ages into 10-year categorical intervals
@@ -255,22 +255,44 @@ tidy_lm <- tidy(linear_model,
 
 [Only bacterial species significantly affect MDR]{style="font-size:0.7em; text-align:center; display:block;"}
 
-## Linear Model Infection frequency
+## Linear Model Infection frequency {.smaller}
 
-:::::: columns
-:::: {.column width="40%"}
-::: {style="max-width:100%; font-size:0.9rem; overflow:auto;"}
+::::::: columns
+:::: {.column width="50"}
+::: incremental
+-   Evaluated whether any of the factors have any association with the infection frequency
+
+-   Clinical factors show no association with infection frequency
+
+-   Infection frequency varied significantly by the bacterial species
+
+-   The number of drug resistances also shows no association with the infection frequency
+
+-   The multivariable model shows that the bacterial species was the only meaningful contributor.
+:::
+::::
+
+:::: {.column width="50%"}
+::: {style="max-width:100%; overflow:auto;"}
 | Model 1         | Model 2           | Model 3    | Model 4      |
 |-----------------|-------------------|------------|--------------|
 | Patient details | Bacterial species | MDR        | Multivariate |
 | p = 0.5394      | p = 0.03842       | p = 0.6002 | p = 0.08977  |
 :::
 ::::
+:::::::
 
-::: {.column width="60%"}
-![](images/infect_plot1.png){style="\"width:100%"}
+## Linear Model Infection frequency
+
+::::: columns
+::: column
+![](images/infect_plot1.png)
 :::
-::::::
+
+::: column
+![](images/infect_volcano.png)
+:::
+:::::
 
 ## Bacterial Resistance Heatmap
 
