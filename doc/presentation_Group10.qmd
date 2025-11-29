@@ -79,7 +79,7 @@ t1
 
 Data Loading, Cleaning & Overview
 
-:::: columns
+:::::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -90,25 +90,25 @@ Data Loading, Cleaning & Overview
 -   **Data Description**: `table1()` and `ggplot()`
 :::
 
-::: {.column width="50%"}
+:::: {.column width="50%"}
+::: {style="
+```         
+text-align:right;
+transform: scale(1.4);
+transform-origin: top left;
+margin-left: 90px;   /* change this value */
+```
 
-<div style="
-    text-align:right;
-    transform: scale(1.4);
-    transform-origin: top left;
-    margin-left: 90px;   /* change this value */
-">
-  <img src="images/04_Age_Gender.png" width="100%">
-</div>
-
+"} <img src="images/04_Age_Gender.png" width="100%"/>
 :::
 ::::
+::::::
 
 ## Data Processing & Description {.smaller}
 
 Data Loading, Cleaning & Overview
 
-:::: columns
+:::::: columns
 ::: {.column width="50%"}
 ### [Workflow]{style="font-size:0.6em"}
 
@@ -119,19 +119,19 @@ Data Loading, Cleaning & Overview
 -   **Data Description**: `table1()` and `ggplot()`
 :::
 
-::: {.column width="50%"}
+:::: {.column width="50%"}
+::: {style="
+```         
+text-align:right;
+transform: scale(1.4);
+transform-origin: top left;
+margin-left: 90px;   /* change this value */
+```
 
-<div style="
-    text-align:right;
-    transform: scale(1.4);
-    transform-origin: top left;
-    margin-left: 90px;   /* change this value */
-">
-  <img src="images/04_Species.png" width="100%">
-</div>
-
+"} <img src="images/04_Species.png" width="100%"/>
 :::
 ::::
+::::::
 
 ## Data Augmentation {.smaller}
 
