@@ -1,3 +1,6 @@
+## Project contributors
+👤 Molly Hong Minh  s242955  molly-hongminh
+
 ## Multidrug Antibiotic Resistance Analysis
 
 This repository contains a reproducible workflow for cleaning, augmenting, and analyzing a multidrug-resistant bacteria dataset.
