@@ -51,9 +51,9 @@ if( !dir.exists(results_dir) ){
 raw_file <- here("data", "_raw", "Bacteria_dataset_Multiresistance.csv")
 
 # Download data from kaggle and save if not already present
-if (!file.exists(raw_file)) {
-  df <- RKaggle::get_dataset("adilimadeddinehosni/multi-resistance-antibiotic-susceptibility")
-  write_csv(df, raw_file)
+if (!fs::file_exists(raw_file)) {
+  RKaggle::get_dataset("adilimadeddinehosni/multi-resistance-antibiotic-susceptibility") %>% 
+    write_csv(raw_file)
 }
 ```
 
