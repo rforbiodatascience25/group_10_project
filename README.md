@@ -1,3 +1,11 @@
+## Project contributors
+
+| Name | Student ID | GitHub |
+|------|------------|--------|
+| Molly Hong Minh | s242955 | [molly-hongminh](https://github.com/molly-hongminh) |
+| Edene Levine | s240875 | [Edenl95](https://github.com/Edenl95) |
+
+
 ## Multidrug Antibiotic Resistance Analysis
 
 This repository contains a reproducible workflow for cleaning, augmenting, and analyzing a multidrug-resistant bacteria dataset.
