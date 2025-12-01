@@ -415,7 +415,7 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <h2 class="anchored" data-anchor-id="add-age-group-variable">Add Age Group Variable</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">90</span>, <span class="dv">10</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"["</span>, <span class="fu">head</span>(breaks, <span class="sc">-</span><span class="dv">1</span>), <span class="st">","</span>, <span class="fu">tail</span>(breaks, <span class="sc">-</span><span class="dv">1</span>), <span class="st">"]"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"["</span>, <span class="fu">head</span>(breaks, <span class="sc">-</span><span class="dv">1</span>), <span class="st">","</span>, <span class="fu">tail</span>(breaks, <span class="sc">-</span><span class="dv">1</span>), <span class="st">"]"</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>mdr_wide <span class="ot">&lt;-</span> mdr_wide <span class="sc">|&gt;</span> </span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_group =</span> <span class="fu">cut</span>(</span>
@@ -472,36 +472,36 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mdr_data <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Age Gender                Species Diabetes Hypertension Hospital_before
-1   77      F    Enterobacteria spp.       No           No              No
-2    2      M       Escherichia coli       No           No             Yes
-3   49      F       Escherichia coli       No           No              No
-4    3      F       Citrobacter spp.      Yes           No             Yes
-5   14      F  Klebsiella pneumoniae       No           No              No
-6   35      M    Enterobacteria spp.       No           No             Yes
-7   59      M       Escherichia coli       No           No              No
-8   29      F       Escherichia coli       No           No             Yes
-9   19      M Pseudomonas aeruginosa      Yes          Yes             Yes
-10  33      F      Proteus mirabilis       No           No              No
+1   87      F      Proteus mirabilis      Yes           No              No
+2   19      F       Escherichia coli       No           No             Yes
+3   39      F       Escherichia coli       No           No              No
+4   39      F Pseudomonas aeruginosa      Yes           No              No
+5   83      F    Enterobacteria spp.       No           No              No
+6   81      F       Escherichia coli       No           No              No
+7   75      F       Escherichia coli       No           No             Yes
+8   41      F       Escherichia coli       No           No             Yes
+9   27      F    Enterobacteria spp.       No           No             Yes
+10  48      M       Citrobacter spp.       No           No              No
    Infection_Freq AMX.AMP AMC CZ FOX CTX.CRO IPM GEN AN Acide.nalidixique ofx
-1               2       R   R  S   S       R   R   R  S                 S   S
-2               3       R   S  S   R       R   R   S  S                 R   S
-3               1       R   S  R   R       R   R   S  S                 S   R
-4               3       S   R  S   R       S   R   S  S                 S   S
-5               2       S   S  I   I       I   S   I  I                 S   S
-6               0       R   R  S   R       S   R   S  S                 S   S
-7               0       R   R  R   R       R   S   R  S                 R   S
-8               2       S   S  S   R       R   R   S  S                 S   S
-9               1       S   S  S   S       S   S   S  S                 S   S
-10              3       R   S  S   S       S   S   S  S                 S   S
+1               0       R   R  S   R       S   S   S  R                 S   S
+2               1       R   R  R   S       R   S   S  R                 S   S
+3               1       S   R  R   R       S   S   S  S                 S   S
+4               0       R   S  R   S       S   R   S  S                 S   S
+5               3       R   S  S   S       S   S   S  S                 S   S
+6               2       R   R  R   S       R   S   S  S                 S   S
+7               3       R   R  R   R       R   S   R  S                 S   S
+8               3       R   R  R   R       R   R   S  R                 S   S
+9               3       S   R  R   S       S   S   S  R                 S   S
+10              0       R   R  R   R       S   S   R  S                 S   S
    CIP C Co.trimoxazole Furanes colistine
 1    S S              S       S         S
-2    R S              R       S         S
-3    R S              S       S         S
-4    S S              S       S         S
-5    R I              I       I         R
-6    S S              S       S         R
-7    R S              S       S         R
-8    S S              R       R         S
+2    S S              S       S         S
+3    S S              S       S         S
+4    S S              S       R         S
+5    S S              S       S         S
+6    S S              S       S         S
+7    R S              R       S         S
+8    R S              R       S         R
 9    S S              S       S         S
 10   S S              S       S         S</code></pre>
 </div>
