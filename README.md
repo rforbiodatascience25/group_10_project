@@ -11,7 +11,8 @@
 Link to the presentation:
 
 ## Data retrieval
-Library "RKaggle" needs to be downloaded to retreive the data in the program.
+All data used in this project is from the following study: [Multi-Resistance Antibiotic Susceptibility](https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data/code) 
+The library "RKaggle" needs to be downloaded to retreive the data in the program.
 
 ## Multidrug Antibiotic Resistance Analysis
 
