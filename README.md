@@ -10,6 +10,9 @@
 ## Presentation
 Link to the presentation:
 
+## Data retrieval
+Library "RKaggle" needs to be downloaded to retreive the data in the program.
+
 ## Multidrug Antibiotic Resistance Analysis
 
 This repository contains a reproducible workflow for cleaning, augmenting, and analyzing a multidrug-resistant bacteria dataset.
