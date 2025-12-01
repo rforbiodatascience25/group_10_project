@@ -139,9 +139,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>raw_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"_raw"</span>, <span class="st">"Bacteria_dataset_Multiresistance.csv"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Download data from kaggle and save if not already present</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(raw_file)) {</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> RKaggle<span class="sc">::</span><span class="fu">get_dataset</span>(<span class="st">"adilimadeddinehosni/multi-resistance-antibiotic-susceptibility"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(df, raw_file)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>fs<span class="sc">::</span><span class="fu">file_exists</span>(raw_file)) {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  RKaggle<span class="sc">::</span><span class="fu">get_dataset</span>(<span class="st">"adilimadeddinehosni/multi-resistance-antibiotic-susceptibility"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_csv</span>(raw_file)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -471,38 +471,38 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mdr_data <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Age Gender                Species Diabetes Hypertension Hospital_before
-1   87      F      Proteus mirabilis      Yes           No              No
-2   19      F       Escherichia coli       No           No             Yes
-3   39      F       Escherichia coli       No           No              No
-4   39      F Pseudomonas aeruginosa      Yes           No              No
-5   83      F    Enterobacteria spp.       No           No              No
-6   81      F       Escherichia coli       No           No              No
-7   75      F       Escherichia coli       No           No             Yes
-8   41      F       Escherichia coli       No           No             Yes
-9   27      F    Enterobacteria spp.       No           No             Yes
-10  48      M       Citrobacter spp.       No           No              No
+<pre><code>   Age Gender             Species Diabetes Hypertension Hospital_before
+1   55      F Enterobacteria spp.       No           No              No
+2   41      F    Citrobacter spp.       No           No             Yes
+3   25      F   Proteus mirabilis       No           No              No
+4   33      F    Escherichia coli       No           No              No
+5   78      F Enterobacteria spp.       No           No              No
+6   59      F    Citrobacter spp.       No           No              No
+7   34      F    Escherichia coli       No           No              No
+8   42      F Morganella morganii       No          Yes             Yes
+9   48      F Morganella morganii       No           No              No
+10  16      M Enterobacteria spp.       No           No              No
    Infection_Freq AMX.AMP AMC CZ FOX CTX.CRO IPM GEN AN Acide.nalidixique ofx
-1               0       R   R  S   R       S   S   S  R                 S   S
-2               1       R   R  R   S       R   S   S  R                 S   S
-3               1       S   R  R   R       S   S   S  S                 S   S
-4               0       R   S  R   S       S   R   S  S                 S   S
-5               3       R   S  S   S       S   S   S  S                 S   S
-6               2       R   R  R   S       R   S   S  S                 S   S
-7               3       R   R  R   R       R   S   R  S                 S   S
-8               3       R   R  R   R       R   R   S  R                 S   S
-9               3       S   R  R   S       S   S   S  R                 S   S
-10              0       R   R  R   R       S   S   R  S                 S   S
+1               3       S   S  S   S       S   S   S  R                 R   S
+2               0       R   S  R   R       S   R   S  S                 S   S
+3               2       S   S  S   R       R   R   S  S                 S   S
+4               2       R   S  R   R       R   R   S  R                 R   S
+5               1       S   S  S   R       S   S   R  S                 S   S
+6               2       S   R  S   R       S   S   S  S                 S   S
+7               3       R   R  R   S       R   R   S  R                 S   S
+8               0       S   S  R   S       S   S   S  S                 R   S
+9               3       S   S  S   S       R   S   S  S                 S   S
+10              2       S   S  R   S       S   S   S  S                 S   S
    CIP C Co.trimoxazole Furanes colistine
 1    S S              S       S         S
-2    S S              S       S         S
+2    R S              S       S         S
 3    S S              S       S         S
-4    S S              S       R         S
-5    S S              S       S         S
-6    S S              S       S         S
-7    R S              R       S         S
-8    R S              R       S         R
-9    S S              S       S         S
+4    S S              S       S         S
+5    S S              R       S         S
+6    R S              S       R         S
+7    S S              S       S         S
+8    S S              S       S         S
+9    S S              S       R         S
 10   S S              S       S         S</code></pre>
 </div>
 </div>
