@@ -17,8 +17,6 @@ The library "RKaggle" needs to be downloaded to retreive the data in the program
 
 ## Multidrug Antibiotic Resistance Analysis
 
-This repository contains a reproducible workflow for cleaning, augmenting, and analyzing a multidrug-resistant bacteria dataset.
-
-All scripts are written in R and produce cleaned datasets, augmented datasets, visualizations, and linear model analyses.
+This project includes importing, tidying, transforming, visualizing and modelling of a bacterial isolate dataset tested against a wide panel of antibiotics.
 
 
