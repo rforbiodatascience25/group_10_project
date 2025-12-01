@@ -8,7 +8,7 @@
 | Vinit Nilesh Vasa | s242582 | [vinitlol](https://github.com/vinitlol) |
 
 ## Presentation
-Link to the presentation:
+Link to the presentation: [Presentation](https://raw.githack.com/rforbiodatascience25/group_10_project/refs/heads/main/doc/presentation.html)
 
 ## Data Retrieval
 All data used in this project is from the following study: [Multi-Resistance Antibiotic Susceptibility](https://www.kaggle.com/datasets/adilimadeddinehosni/multi-resistance-antibiotic-susceptibility/data/code) 
