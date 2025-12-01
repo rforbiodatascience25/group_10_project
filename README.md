@@ -1,7 +1,10 @@
 ## Project contributors
 👤 Molly Hong Minh&nbsp;&nbsp;&nbsp;s242955&nbsp;&nbsp;&nbsp;molly-hongminh
-👤 Edene Levine&nbsp;&nbsp;&nbsp;s242955&nbsp;&nbsp;&nbsp;molly-hongminh
+
+👤 Edene Levine&nbsp;&nbsp;&nbsp;s240875&nbsp;&nbsp;&nbsp;Edenl95
+
 👤 Molly Hong Minh&nbsp;&nbsp;&nbsp;s242955&nbsp;&nbsp;&nbsp;molly-hongminh
+
 👤 Molly Hong Minh&nbsp;&nbsp;&nbsp;s242955&nbsp;&nbsp;&nbsp;molly-hongminh
 
 ## Multidrug Antibiotic Resistance Analysis
