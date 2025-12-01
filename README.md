@@ -4,8 +4,8 @@
 |------|------------|--------|
 | Molly Hong Minh | s242955 | [molly-hongminh](https://github.com/molly-hongminh) |
 | Edene Levine | s240875 | [Edenl95](https://github.com/Edenl95) |
-| Pablo Vivero Fernandez | s243357 | [pablovf22] (https://github.com/pablovf22) |
-| Vinit Nilesh Vasa | s242582 | [vinitlol] (https://github.com/vinitlol) |
+| Pablo Vivero Fernandez | s243357 | [pablovf22](https://github.com/pablovf22) |
+| Vinit Nilesh Vasa | s242582 | [vinitlol](https://github.com/vinitlol) |
 
 
 ## Multidrug Antibiotic Resistance Analysis
