@@ -1,5 +1,5 @@
 ## Project contributors
-👤 Molly Hong Minh  s242955  molly-hongminh
+👤 Molly Hong Minh&nbsp;&nbsp;&nbsp;s242955&nbsp;&nbsp;&nbsp;molly-hongminh
 
 ## Multidrug Antibiotic Resistance Analysis
 
